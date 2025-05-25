@@ -1,0 +1,28 @@
+{
+  "authors": [
+    {
+      "slug": "marc",
+      "name": "Marc Lou",
+      "job": "Maker of ByeDispute",
+      "description": "Marc is a developer and an entrepreneur. He's built 20 startups in the last 3 years. 6 were profitable and 3 were acquired. He's currently building ByeDispute, the #1 Stripe Chargebacks Protection tool.",
+      "avatar": "/images/authors/marc.png",
+      "socials": [
+        {
+          "name": "Twitter",
+          "icon": "simple-icons:twitter",
+          "url": "https://twitter.com/marc_louvion"
+        },
+        {
+          "name": "LinkedIn",
+          "icon": "simple-icons:linkedin",
+          "url": "https://www.linkedin.com/in/marclouvion/"
+        },
+        {
+          "name": "GitHub",
+          "icon": "simple-icons:github",
+          "url": "https://github.com/Marc-Lou-Org/ship-fast"
+        }
+      ]
+    }
+  ]
+} 

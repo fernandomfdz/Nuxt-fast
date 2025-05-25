@@ -1,38 +1,75 @@
-# ShipFast — Javascript
+# Nuxt Minimal Starter
 
-Hey maker 👋 it's Marc from [ShipFast](https://shipfa.st/docs). Let's get your startup off the ground, FAST ⚡️
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-<sub>**Watch/Star the repo to be notified when updates are pushed**</sub>
+## Setup
 
-## Get Started
+Make sure to install dependencies:
 
-1. Follow the [Get Started Tutorial](https://shipfa.st/docs) to clone the repo and run your local server 💻
+```bash
+# npm
+npm install
 
-<sub>**Looking for the /pages router version?** Use this [documentation](https://shipfa.st/docs-old) instead</sub>
+# pnpm
+pnpm install
 
-2. Follow the [Ship In 5 Minutes Tutorial](https://shipfa.st/docs/tutorials/ship-in-5-minutes) to learn the foundation and ship your app quickly ⚡️
+# yarn
+yarn install
 
-## Links
+# bun
+bun install
+```
 
--   [📚 Documentation](https://shipfa.st/docs)
--   [📣 Updates](https://shipfast.beehiiv.com/)
--   [🧑‍💻 Discord](https://shipfa.st/dashboard)
--   [🥇 Leaderboard](https://shipfa.st/leaderboard)
+## Development Server
 
-## Support
+Start the development server on `http://localhost:3000`:
 
-Reach out at hello@shipfa.st
+```bash
+# npm
+npm run dev
 
-Let's ship it, FAST ⚡️
+# pnpm
+pnpm dev
 
-\_
+# yarn
+yarn dev
 
-**📈 Grow your startup with [DataFast](https://datafa.st?ref=shipfast_readme)**
+# bun
+bun run dev
+```
 
--   Analyze your traffic
--   Get insights on your customers
--   Make data-driven decisions
+## Production
 
-ShipFast members get 30% OFF on all plans! 🎁
+Build the application for production:
 
-![datafast](https://github.com/user-attachments/assets/085453a6-8a66-45be-b7ea-a7a08e856ed8)
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

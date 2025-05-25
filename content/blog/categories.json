@@ -1,0 +1,53 @@
+{
+  "categories": [
+    {
+      "slug": "feature",
+      "title": "New Features",
+      "titleShort": "Features",
+      "description": "Here are the latest features we've added to NuxtFast. I'm constantly improving our product to help you ship faster.",
+      "descriptionShort": "Latest features added to NuxtFast."
+    },
+    {
+      "slug": "tutorial",
+      "title": "How Tos & Tutorials",
+      "titleShort": "Tutorials",
+      "description": "Learn how to use NuxtFast with these step-by-step tutorials. I'll show you how to ship faster and save time.",
+      "descriptionShort": "Learn how to use NuxtFast with these step-by-step tutorials."
+    },
+    {
+      "slug": "development",
+      "title": "Development",
+      "titleShort": "Dev",
+      "description": "Articles about development best practices, coding tips, and technical insights.",
+      "descriptionShort": "Development best practices and coding tips."
+    },
+    {
+      "slug": "daisyui",
+      "title": "DaisyUI",
+      "titleShort": "DaisyUI",
+      "description": "Everything about DaisyUI components, themes, and styling techniques.",
+      "descriptionShort": "DaisyUI components and themes."
+    },
+    {
+      "slug": "nuxt",
+      "title": "Nuxt.js",
+      "titleShort": "Nuxt",
+      "description": "Nuxt.js framework guides, tips, and advanced techniques.",
+      "descriptionShort": "Nuxt.js guides and tips."
+    },
+    {
+      "slug": "auth",
+      "title": "Authentication",
+      "titleShort": "Auth",
+      "description": "Authentication systems, security best practices, and user management.",
+      "descriptionShort": "Authentication and security."
+    },
+    {
+      "slug": "database",
+      "title": "Database",
+      "titleShort": "DB",
+      "description": "Database design, optimization, and integration guides.",
+      "descriptionShort": "Database guides and optimization."
+    }
+  ]
+} 

@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+# Sitemap
+Sitemap: ${process.env.SITE_URL || 'https://shipfa.st'}/sitemap.xml
