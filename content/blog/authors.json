@@ -1,26 +1,26 @@
 {
   "authors": [
     {
-      "slug": "marc",
-      "name": "Marc Lou",
-      "job": "Maker of ByeDispute",
-      "description": "Marc is a developer and an entrepreneur. He's built 20 startups in the last 3 years. 6 were profitable and 3 were acquired. He's currently building ByeDispute, the #1 Stripe Chargebacks Protection tool.",
-      "avatar": "/images/authors/marc.png",
+      "slug": "fer",
+      "name": "Fernando Meseguer",
+      "job": "Maker of NuxtFast",
+      "description": "Hola, soy Fernando Meseguer, desarrollador web y creador de NuxtFast. Me encanta crear herramientas que ayuden a los desarrolladores a crear aplicaciones web más rápido y eficiente.",
+      "avatar": "/developer.jpeg",
       "socials": [
         {
           "name": "Twitter",
           "icon": "simple-icons:twitter",
-          "url": "https://twitter.com/marc_louvion"
+          "url": "https://x.com/fernandomfdz"
         },
         {
           "name": "LinkedIn",
           "icon": "simple-icons:linkedin",
-          "url": "https://www.linkedin.com/in/marclouvion/"
+          "url": "https://www.linkedin.com/in/fernandomfdz/"
         },
         {
           "name": "GitHub",
           "icon": "simple-icons:github",
-          "url": "https://github.com/Marc-Lou-Org/ship-fast"
+          "url": "https://github.com/fernandomfdz/nuxt-fast"
         }
       ]
     }

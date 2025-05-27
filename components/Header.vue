@@ -63,8 +63,9 @@ watch(() => useRoute().fullPath, () => {
       </div>
 
       <!-- CTA en pantallas grandes -->
-      <div class="hidden lg:flex lg:justify-end lg:flex-1">
+      <div class="hidden lg:flex lg:justify-end lg:flex-1 gap-2">
         <ButtonSignin extra-style="btn-primary" />
+        <ThemeSelector/>
       </div>
     </nav>
 

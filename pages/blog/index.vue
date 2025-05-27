@@ -223,6 +223,7 @@ const processedArticles = computed(() => {
     ...article,
     // Generar datos por defecto si no existen
     publishedAt: article.publishedAt || new Date().toISOString().split('T')[0],
+    // El autor ya viene enriquecido desde useBlog, solo agregar fallback si no existe
     author: article.author || {
       slug: 'default',
       name: 'Equipo NuxtFast',

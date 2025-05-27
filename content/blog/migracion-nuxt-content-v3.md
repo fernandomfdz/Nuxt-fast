@@ -6,9 +6,7 @@ categories:
   - slug: development
   - slug: nuxt
 author:
-  name: 'Equipo de Desarrollo'
-  job: 'Backend Developers'
-  avatar: 'https://picsum.photos/100/100?random=3'
+  slug: fer
 image:
   src: 'https://picsum.photos/800/400?random=16'
   alt: 'Migración a Nuxt Content v3'
@@ -108,7 +106,6 @@ const authorArticles = allArticles.filter(article => {
 
 | Campo v2 | Campo v3 | Descripción |
 |----------|----------|-------------|
-| `path` | `_path` | Ruta del archivo |
 | `article.meta.categories` | `article.categories` | Categorías directas en frontmatter |
 | `article.meta.author` | `article.author` | Autor directo en frontmatter |
 
@@ -131,7 +128,7 @@ export interface Article {
     body: string
   }
   // Campos adicionales de Nuxt Content v3
-  _path?: string
+  path?: string
   _id?: string
   _type?: string
   body?: unknown

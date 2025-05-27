@@ -6,9 +6,7 @@ categories:
   - slug: development
   - slug: daisyui
 author:
-  name: 'Equipo de Desarrollo'
-  job: 'Frontend Developers'
-  avatar: 'https://picsum.photos/100/100?random=1'
+  slug: fer
 image:
   src: 'https://picsum.photos/800/400?random=10'
   alt: 'Migración de colores DaisyUI y mejoras del blog'

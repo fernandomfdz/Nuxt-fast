@@ -1,8 +1,9 @@
 import type { Article, Category, Author } from '~/types/blog'
 
 export const useBlog = () => {
-  // Cache para las categorías
+  // Cache para las categorías y autores
   let categoriesCache: Category[] | null = null
+  let authorsCache: Author[] | null = null
 
   // Función para obtener categorías completas
   const getCategoriesData = async (): Promise<Category[]> => {
@@ -19,10 +20,26 @@ export const useBlog = () => {
     }
   }
 
-  // Función para enriquecer categorías de artículos
+  // Función para obtener autores completos
+  const getAuthorsData = async (): Promise<Author[]> => {
+    if (authorsCache) return authorsCache
+
+    try {
+      const authorsFile = await $fetch('/api/authors') as { authors: Author[] }
+      authorsCache = authorsFile?.authors || []
+      return authorsCache
+    } catch (error) {
+      console.error('Error getting authors data:', error)
+      authorsCache = []
+      return authorsCache
+    }
+  }
+
+  // Función para enriquecer categorías y autor de artículos
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const enrichArticleCategories = async (article: any): Promise<Article> => {
     const allCategories = await getCategoriesData()
+    const allAuthors = await getAuthorsData()
     
     // En Nuxt Content v3, los datos del frontmatter están en article directamente
     const categories = article.categories || []
@@ -37,10 +54,18 @@ export const useBlog = () => {
       return cat
     })
 
+    // Enriquecer autor si solo tiene slug
+    let enrichedAuthor = article.author
+    if (article.author && typeof article.author === 'object' && article.author.slug && !article.author.name) {
+      const fullAuthor = allAuthors.find(author => author.slug === article.author.slug)
+      enrichedAuthor = fullAuthor || article.author
+    }
+
     return {
       ...article,
       categories: enrichedCategories,
-      slug: article._path?.replace('/blog/', '') || article.path?.replace('/blog/', '') || 'untitled'
+      author: enrichedAuthor,
+      slug: article.path?.replace('/blog/', '') || article.path?.replace('/blog/', '') || 'untitled'
     } as Article
   }
 
@@ -165,43 +190,7 @@ export const useBlog = () => {
   }
 
   const getAuthors = async (): Promise<Author[]> => {
-    try {
-      // Intentar leer desde el archivo JSON primero
-      const authorsFile = await $fetch('/api/authors') as { authors: Author[] }
-      if (authorsFile?.authors) {
-        return authorsFile.authors
-      }
-
-      // Fallback: extraer autores únicos de los artículos
-      const allArticles = articles.value || []
-      const authorsMap = new Map<string, Author>()
-      
-      allArticles.forEach(article => {
-        if (article.author && article.author.slug) {
-          if (!authorsMap.has(article.author.slug)) {
-            authorsMap.set(article.author.slug, article.author)
-          }
-        }
-      })
-      
-      return Array.from(authorsMap.values())
-    } catch (error) {
-      console.error('Error getting authors:', error)
-      
-      // Fallback final: extraer de artículos
-      const allArticles = articles.value || []
-      const authorsMap = new Map<string, Author>()
-      
-      allArticles.forEach(article => {
-        if (article.author && article.author.slug) {
-          if (!authorsMap.has(article.author.slug)) {
-            authorsMap.set(article.author.slug, article.author)
-          }
-        }
-      })
-      
-      return Array.from(authorsMap.values())
-    }
+    return await getAuthorsData()
   }
 
   const formatDate = (date: string): string => {

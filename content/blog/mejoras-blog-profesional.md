@@ -6,15 +6,7 @@ categories:
   - slug: feature
   - slug: development
 author:
-  slug: marc
-  name: Marc Lou
-  job: Maker of ByeDispute
-  description: Marc is a developer and an entrepreneur. He's built 20 startups in the last 3 years.
-  avatar: https://picsum.photos/100/100?random=1
-  socials:
-    - name: Twitter
-      icon: simple-icons:twitter
-      url: https://twitter.com/marc_louvion
+  slug: fer
 image:
   src: https://picsum.photos/800/400?random=4
   urlRelative: https://picsum.photos/800/400?random=4

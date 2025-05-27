@@ -37,8 +37,8 @@ export interface Article {
     body: string
   }
   // Campos adicionales de Nuxt Content v3
-  _path?: string
-  _id?: string
-  _type?: string
+  path?: string
+  id?: string
+  type?: string
   body?: unknown
 } 

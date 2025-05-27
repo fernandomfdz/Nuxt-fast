@@ -6,9 +6,7 @@ categories:
   - slug: feature
   - slug: development
 author:
-  name: 'Equipo de Desarrollo'
-  job: 'Frontend Developers'
-  avatar: 'https://picsum.photos/100/100?random=2'
+  slug: fer
 image:
   src: 'https://picsum.photos/800/400?random=15'
   alt: 'Sistema de categorías y artículos relacionados mejorado'
