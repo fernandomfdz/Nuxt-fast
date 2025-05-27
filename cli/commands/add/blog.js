@@ -294,12 +294,12 @@ async function updateConfigFile() {
       throw new Error('No se pudo encontrar el punto de inserción en config.ts')
     }
     
-    const modulesSection = `
+    const modulesSection = `,
+
   // === MÓDULOS DE NUXTFAST ===
   modules: {
     blog: true
-  },
-`
+  }`
     
     configContent = configContent.slice(0, insertPoint) + modulesSection + configContent.slice(insertPoint)
   }
