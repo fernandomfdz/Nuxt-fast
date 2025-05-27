@@ -1,16 +1,15 @@
 ---
-title: Configuración Completa de NuxtFast con config.ts
-description: Aprende a personalizar completamente tu aplicación NuxtFast usando el archivo config.ts. Desde el hero hasta los pagos, todo en un solo lugar.
-publishedAt: 2024-01-20
-categories:
-  - slug: tutorial
-  - slug: development
+title: "Configuracion Nuxtfast Config"
+description: "Artículo sobre configuracion nuxtfast config"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=16
-  urlRelative: https://picsum.photos/800/400?random=16
-  alt: Configuración de NuxtFast
+  src: "https://picsum.photos/800/400?random=8"
+  alt: "Configuracion Nuxtfast Config"
 ---
 
 ¿Quieres personalizar completamente tu aplicación NuxtFast sin tocar múltiples archivos? El archivo `config.ts` es tu herramienta principal para configurar todo desde un solo lugar. En esta guía te explico cada sección y cómo aprovecharla al máximo.
@@ -1106,4 +1105,4 @@ El archivo `config.ts` es la herramienta más poderosa de NuxtFast para personal
 
 ---
 
-*¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* 🚀 
+*¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* 🚀

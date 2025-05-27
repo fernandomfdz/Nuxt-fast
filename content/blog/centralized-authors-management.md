@@ -1,16 +1,18 @@
 ---
-title: Gestión Centralizada de Autores en NuxtFast
-description: Aprende cómo hemos mejorado la gestión de autores centralizando su información en un archivo JSON, eliminando duplicación y facilitando el mantenimiento.
-publishedAt: 2024-01-16
-categories:
-  - slug: feature
-  - slug: development
+title: "Gestión Centralizada de Autores en NuxtFast"
+description: "Aprende cómo hemos mejorado la gestión de autores centralizando su información en un archivo JSON, eliminando duplicación y facilitando el mantenimiento."
+publishedAt: "2024-01-16"
 author:
-  slug: fer
+  name: "Fernando"
+  slug: "fer"
+categories:
+  - slug: "feature"
+    title: "Feature"
+  - slug: "development"
+    title: "Development"
 image:
-  src: https://picsum.photos/800/400?random=10
-  urlRelative: https://picsum.photos/800/400?random=10
-  alt: Gestión centralizada de autores
+  src: "https://picsum.photos/800/400?random=2"
+  alt: "Gestión centralizada de autores"
 ---
 
 ¡Hemos implementado una mejora importante en NuxtFast! Ahora la gestión de autores está completamente centralizada, eliminando la duplicación de código y facilitando el mantenimiento del blog.
@@ -215,4 +217,4 @@ Esta mejora hace que NuxtFast sea aún más eficiente para la gestión de conten
 
 ---
 
-*Esta funcionalidad está disponible en la última versión de NuxtFast. ¡Actualiza tu proyecto para aprovechar estas mejoras!* 🚀 
+*Esta funcionalidad está disponible en la última versión de NuxtFast. ¡Actualiza tu proyecto para aprovechar estas mejoras!* 🚀

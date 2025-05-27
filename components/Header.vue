@@ -7,6 +7,17 @@ const isOpen = ref(false)
 watch(() => useRoute().fullPath, () => {
   isOpen.value = false
 })
+
+// Obtener enlaces de todos los módulos habilitados
+const { getAllNavigationLinks } = useNuxtFastModules()
+
+// Combinar enlaces de configuración con enlaces de módulos
+const allNavigationLinks = computed(() => {
+  // Filtrar enlaces del blog de la configuración estática para evitar duplicados
+  const configLinks = config.navigation.links.filter(link => link.href !== '/blog')
+  const moduleLinks = getAllNavigationLinks()
+  return [...moduleLinks, ...configLinks]
+})
 </script>
 
 <template>
@@ -52,7 +63,7 @@ watch(() => useRoute().fullPath, () => {
       <!-- Enlaces en pantallas grandes -->
       <div class="hidden lg:flex lg:justify-center lg:gap-12 lg:items-center">
         <NuxtLink
-          v-for="link in config.navigation.links"
+          v-for="link in allNavigationLinks"
           :key="link.href"
           :href="link.href"
           class="link link-hover"
@@ -111,7 +122,7 @@ watch(() => useRoute().fullPath, () => {
           <div class="py-4">
             <div class="flex flex-col gap-y-4 items-start">
               <NuxtLink
-                v-for="link in config.navigation.links"
+                v-for="link in allNavigationLinks"
                 :key="link.href"
                 :href="link.href"
                 class="link link-hover"

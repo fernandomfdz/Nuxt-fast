@@ -1,17 +1,5 @@
 <template>
   <div class="min-h-screen bg-base-100">
-    <!-- Navegación de regreso -->
-    <div class="container mx-auto px-4 pt-8">
-      <NuxtLink
-        to="/blog"
-        class="inline-flex items-center gap-2 text-base-content/70 hover:text-primary transition-colors duration-300 group"
-        title="Volver al Blog"
-      >
-        <Icon name="heroicons:arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-        <span class="font-medium">Volver al Blog</span>
-      </NuxtLink>
-    </div>
-
     <article class="container mx-auto px-4 py-12">
       <!-- Header del artículo -->
       <header class="max-w-4xl mx-auto text-center mb-16">
@@ -222,7 +210,6 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { useBlog } from '~/composables/useBlog'
 
 definePageMeta({
   layout: 'blog'

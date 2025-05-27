@@ -1,16 +1,15 @@
 ---
-title: Mejoras del Blog Profesional en NuxtFast
-description: Descubre las nuevas mejoras implementadas en el blog de NuxtFast, incluyendo diseño profesional, componentes mejorados y mejor experiencia de usuario.
-publishedAt: 2024-01-16
-categories:
-  - slug: feature
-  - slug: development
+title: "Mejoras Blog Profesional"
+description: "Artículo sobre mejoras blog profesional"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=4
-  urlRelative: https://picsum.photos/800/400?random=4
-  alt: Mejoras del blog profesional NuxtFast
+  src: "https://picsum.photos/800/400?random=12"
+  alt: "Mejoras Blog Profesional"
 ---
 
 Hemos implementado una serie de mejoras significativas en el blog de NuxtFast para ofrecer una experiencia de lectura más profesional y atractiva. Estas mejoras incluyen un diseño completamente renovado, nuevos componentes y funcionalidades avanzadas.
@@ -137,4 +136,4 @@ Las nuevas mejoras han resultado en:
 
 ---
 
-*Estas mejoras representan nuestro compromiso con ofrecer la mejor experiencia de blog para desarrolladores. ¡Esperamos que disfrutes explorando el nuevo diseño!* 
+*Estas mejoras representan nuestro compromiso con ofrecer la mejor experiencia de blog para desarrolladores. ¡Esperamos que disfrutes explorando el nuevo diseño!*

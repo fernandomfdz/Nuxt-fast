@@ -1,4 +1,47 @@
-import type { Article, Category, Author } from '~/types/blog'
+export interface Category {
+  slug: string
+  title: string
+  titleShort?: string
+  description: string
+  descriptionShort?: string
+}
+
+export interface Social {
+  name: string
+  icon: string
+  url: string
+}
+
+export interface Author {
+  slug?: string
+  name: string
+  job?: string
+  description?: string
+  avatar?: string
+  socials?: Social[]
+}
+
+export interface Article {
+  slug: string
+  title: string
+  description?: string
+  categories?: Category[]
+  author?: Author
+  publishedAt: string
+  image?: {
+    src: string
+    urlRelative?: string
+    alt?: string
+  }
+  content?: {
+    body: string
+  }
+  // Campos adicionales de Nuxt Content v3
+  path?: string
+  id?: string
+  type?: string
+  body?: unknown
+} 
 
 export const useBlog = () => {
   // Cache para las categorías y autores
@@ -61,23 +104,26 @@ export const useBlog = () => {
       enrichedAuthor = fullAuthor || article.author
     }
 
+    // Extraer slug del path
+    const slug = article.path?.replace('/blog/', '') || article.slug || 'untitled'
+
     return {
       ...article,
+      slug,
       categories: enrichedCategories,
       author: enrichedAuthor,
-      slug: article.path?.replace('/blog/', '') || article.path?.replace('/blog/', '') || 'untitled'
+      publishedAt: article.publishedAt || new Date().toISOString().split('T')[0]
     } as Article
   }
 
   // Obtener todos los artículos usando queryCollection de Nuxt Content v3
-  const { data: articles } = useAsyncData('articles', async () => {
+  const { data: articles } = useAsyncData('blog-articles', async () => {
     try {
+      // Usar la nueva API de Nuxt Content v3
       const rawArticles = await queryCollection('content')
         .where('path', 'LIKE', '/blog/%')
-        .where('path', 'NOT LIKE', '/blog/categories')
-        .where('path', 'NOT LIKE', '/blog/authors')
-        .where('path', 'NOT LIKE', '/blog/categories.json')
-        .where('path', 'NOT LIKE', '/blog/authors.json')
+        .where('path', 'NOT LIKE', '/blog/categories%')
+        .where('path', 'NOT LIKE', '/blog/authors%')
         .all()
       
       // Enriquecer artículos con categorías completas
@@ -85,7 +131,10 @@ export const useBlog = () => {
         rawArticles.map(article => enrichArticleCategories(article))
       )
       
-      return enrichedArticles
+      // Ordenar por fecha de publicación (más recientes primero)
+      return enrichedArticles.sort((a, b) => 
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      )
     } catch (error) {
       console.error('Error loading articles:', error)
       return []
@@ -94,7 +143,10 @@ export const useBlog = () => {
 
   const getArticleBySlug = async (slug: string): Promise<Article | null> => {
     try {
-      const article = await queryCollection('content').path(`/blog/${slug}`).first()
+      const article = await queryCollection('content')
+        .where('path', '=', `/blog/${slug}`)
+        .first()
+      
       if (!article) return null
       
       return await enrichArticleCategories(article)
@@ -108,9 +160,11 @@ export const useBlog = () => {
     try {
       const allArticles = articles.value || []
       
-      return allArticles.filter(article => 
+      const filtered = allArticles.filter(article => 
         article.categories?.some(cat => cat.slug === categorySlug)
       )
+      
+      return filtered
     } catch (error) {
       console.error('Error getting articles by category:', error)
       return []
@@ -170,11 +224,9 @@ export const useBlog = () => {
 
   const getArticlesByAuthor = async (authorSlug: string): Promise<Article[]> => {
     try {
-      // En lugar de hacer una consulta compleja, filtramos los artículos ya cargados
       const allArticles = articles.value || []
       
       const authorArticles = allArticles.filter(article => {
-        // Verificar si el artículo tiene autor y si coincide el slug
         return article.author?.slug === authorSlug
       })
       

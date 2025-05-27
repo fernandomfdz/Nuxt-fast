@@ -2,6 +2,9 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
+  "bin": {
+    "nuxtfast": "./cli/index.js"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

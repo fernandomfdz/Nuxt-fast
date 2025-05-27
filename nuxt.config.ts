@@ -1,4 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
+import { getNuxtModules, getModuleConfigs } from './utils/modules'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -11,7 +12,6 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/fonts',
     '@nuxt/icon',
@@ -21,17 +21,10 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@sidebase/nuxt-auth',
     '@nuxtjs/sitemap',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    // Módulos de NuxtFast configurados automáticamente desde config.ts
+    ...getNuxtModules()
   ],
-
-  content: {
-    markdown: {
-      toc: {
-        depth: 2,
-        searchDepth: 2
-      }
-    }
-  },
 
   css: ['~/assets/css/tailwind.css'],
 
@@ -79,7 +72,9 @@ export default defineNuxtConfig({
     public: {
       authUrl: process.env.AUTH_ORIGIN || 'http://localhost:3000',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-      appName: 'NuxtFast'
+      appName: 'NuxtFast',
+      // Configuración de módulos desde config.ts
+      ...getModuleConfigs()
     }
   },
 
@@ -97,5 +92,8 @@ export default defineNuxtConfig({
         verbatimModuleSyntax: false
       }
     }
-  }
+  },
+
+  // Configuración de módulos aplicada automáticamente desde config.ts
+  ...getModuleConfigs()
 })

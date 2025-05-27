@@ -97,7 +97,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBlog } from '~/composables/useBlog'
 
 interface Article {
   slug: string

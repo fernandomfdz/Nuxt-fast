@@ -1,16 +1,15 @@
 ---
-title: Cómo Configurar el Login y Autenticación en NuxtFast
-description: Guía completa para configurar autenticación con Google, magic links, proteger rutas y gestionar usuarios en NuxtFast.
-publishedAt: 2024-01-18
-categories:
-  - slug: tutorial
-  - slug: auth
+title: "Como Configurar Login Nuxtfast"
+description: "Artículo sobre como configurar login nuxtfast"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=14
-  urlRelative: https://picsum.photos/800/400?random=14
-  alt: Configurar autenticación en NuxtFast
+  src: "https://picsum.photos/800/400?random=5"
+  alt: "Como Configurar Login Nuxtfast"
 ---
 
 ¿Quieres implementar un sistema de autenticación robusto en tu aplicación NuxtFast? En esta guía te explico paso a paso cómo configurar Google OAuth, magic links, proteger rutas y gestionar usuarios.
@@ -985,4 +984,4 @@ export default defineEventHandler(async (event) => {
 ---
 
 *¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* 🚀
-</rewritten_file> 
+</rewritten_file>

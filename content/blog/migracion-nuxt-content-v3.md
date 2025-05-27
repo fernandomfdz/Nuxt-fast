@@ -1,15 +1,15 @@
 ---
-title: 'Migración a Nuxt Content v3: Mejoras y Simplificaciones'
-description: 'Documentación sobre la migración del sistema de blog a Nuxt Content v3, incluyendo nuevas APIs, mejoras de performance y simplificaciones en las consultas'
-publishedAt: '2024-01-18'
-categories:
-  - slug: development
-  - slug: nuxt
+title: "Migracion Nuxt Content V3"
+description: "Artículo sobre migracion nuxt content v3"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: 'https://picsum.photos/800/400?random=16'
-  alt: 'Migración a Nuxt Content v3'
+  src: "https://picsum.photos/800/400?random=16"
+  alt: "Migracion Nuxt Content V3"
 ---
 
 # Migración a Nuxt Content v3: Mejoras y Simplificaciones
@@ -304,4 +304,4 @@ const articles: Article[] = await queryCollection('content').all()
 
 ---
 
-*Esta migración a Nuxt Content v3 establece una base sólida para el futuro crecimiento del blog, con mejor performance, type safety y mantenibilidad.* 
+*Esta migración a Nuxt Content v3 establece una base sólida para el futuro crecimiento del blog, con mejor performance, type safety y mantenibilidad.*

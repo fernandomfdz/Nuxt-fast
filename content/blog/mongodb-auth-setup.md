@@ -1,17 +1,19 @@
 ---
-title: Configuración de MongoDB y Autenticación en NuxtFast
-description: Aprende a configurar MongoDB Atlas y el sistema de autenticación completo en NuxtFast paso a paso.
-publishedAt: 2024-01-14
-categories:
-  - slug: tutorial
-  - slug: auth
-  - slug: database
+title: "Configuración de Autenticación con MongoDB"
+description: "Guía completa para configurar autenticación segura con MongoDB en NuxtFast."
+publishedAt: "2024-01-15"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "tutorial"
+    title: "Tutorial"
+  - slug: "database"
+    title: "Base de Datos"
+  - slug: "auth"
+    title: "Autenticación"
 image:
-  src: https://picsum.photos/800/400?random=6
-  urlRelative: https://picsum.photos/800/400?random=6
-  alt: MongoDB y autenticación en NuxtFast
+  src: "https://picsum.photos/800/400?random=18"
+  alt: "Configuración de autenticación con MongoDB"
 ---
 
 # Configuración de MongoDB y Autenticación en NuxtFast
@@ -329,4 +331,4 @@ MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/prod
 
 ---
 
-*Con esta configuración tendrás un sistema de autenticación robusto y escalable en NuxtFast. ¡Tu aplicación estará lista para manejar usuarios de forma segura!* 
+*Con esta configuración tendrás un sistema de autenticación robusto y escalable en NuxtFast. ¡Tu aplicación estará lista para manejar usuarios de forma segura!*

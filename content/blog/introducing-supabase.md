@@ -1,16 +1,15 @@
 ---
-title: Introducing Supabase to NuxtFast
-description: Supabase is an open-source Firebase alternative. It's a great tool for building a backend for your app. It's now integrated with NuxtFast!
-publishedAt: 2023-11-20
-categories:
-  - slug: feature
-  - slug: database
+title: "Introducing Supabase"
+description: "Artículo sobre introducing supabase"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=2
-  urlRelative: https://picsum.photos/800/400?random=2
-  alt: Supabase and NuxtFast logo combined
+  src: "https://picsum.photos/800/400?random=11"
+  alt: "Introducing Supabase"
 ---
 
 # Introducing Supabase to NuxtFast
@@ -71,4 +70,4 @@ We're excited to see what you'll build with this powerful combination!
 
 ---
 
-*Ready to get started? Check out our [Getting Started guide](/blog/getting-started-nuxtfast) or join our community on Discord.* 
+*Ready to get started? Check out our [Getting Started guide](/blog/getting-started-nuxtfast) or join our community on Discord.*

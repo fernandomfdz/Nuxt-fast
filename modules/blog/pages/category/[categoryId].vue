@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { useBlog } from '~/composables/useBlog'
 
 definePageMeta({
   layout: 'blog'

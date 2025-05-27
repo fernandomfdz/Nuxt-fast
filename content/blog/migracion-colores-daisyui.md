@@ -1,15 +1,15 @@
 ---
-title: 'Migración a Colores Semánticos de DaisyUI y Mejoras del Blog'
-description: 'Documentación sobre la migración de colores específicos de Tailwind CSS a colores semánticos de DaisyUI y las nuevas funcionalidades del blog'
-publishedAt: '2024-01-15'
-categories:
-  - slug: development
-  - slug: daisyui
+title: "Migracion Colores Daisyui"
+description: "Artículo sobre migracion colores daisyui"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: 'https://picsum.photos/800/400?random=10'
-  alt: 'Migración de colores DaisyUI y mejoras del blog'
+  src: "https://picsum.photos/800/400?random=15"
+  alt: "Migracion Colores Daisyui"
 ---
 
 # Migración a Colores Semánticos de DaisyUI y Mejoras del Blog
@@ -260,4 +260,4 @@ Esta migración y las nuevas funcionalidades mejoran significativamente la exper
 4. **Compartir fácil** en redes sociales con múltiples opciones
 5. **Diseño más eficiente** del espacio en pantalla
 
-La implementación sigue las mejores prácticas de DaisyUI, VueUse y Nuxt.js, facilitando el mantenimiento futuro del código y proporcionando una base sólida para futuras mejoras. 
+La implementación sigue las mejores prácticas de DaisyUI, VueUse y Nuxt.js, facilitando el mantenimiento futuro del código y proporcionando una base sólida para futuras mejoras.

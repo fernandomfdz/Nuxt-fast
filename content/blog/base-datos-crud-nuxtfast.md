@@ -1,16 +1,15 @@
 ---
-title: Base de Datos y CRUD en NuxtFast - Guía Completa con MongoDB
-description: Aprende a configurar MongoDB, crear modelos, implementar operaciones CRUD y gestionar datos en NuxtFast con ejemplos prácticos.
-publishedAt: 2024-01-19
-categories:
-  - slug: tutorial
-  - slug: database
+title: "Base Datos Crud Nuxtfast"
+description: "Artículo sobre base datos crud nuxtfast"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=15
-  urlRelative: https://picsum.photos/800/400?random=15
-  alt: Base de datos y CRUD en NuxtFast
+  src: "https://picsum.photos/800/400?random=1"
+  alt: "Base Datos Crud Nuxtfast"
 ---
 
 ¿Quieres dominar la gestión de datos en NuxtFast? En esta guía completa aprenderás a configurar MongoDB, crear modelos robustos e implementar operaciones CRUD completas con ejemplos prácticos.
@@ -1335,4 +1334,4 @@ export default defineEventHandler(async (event) => {
 
 ---
 
-*¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* 🚀 
+*¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* 🚀

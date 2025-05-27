@@ -1,16 +1,15 @@
 ---
-title: Implementación de Selector de Temas con DaisyUI v5 y Tailwind CSS v4
-description: Aprende cómo implementar un selector de temas funcional usando DaisyUI v5 con Tailwind CSS v4 en NuxtFast, incluyendo soporte para tema claro, oscuro y automático del sistema.
-publishedAt: 2024-01-17
-categories:
-  - slug: tutorial
-  - slug: daisyui
+title: "Implementacion Selector Temas Daisyui"
+description: "Artículo sobre implementacion selector temas daisyui"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=5
-  urlRelative: https://picsum.photos/800/400?random=5
-  alt: Selector de temas DaisyUI v5 con Tailwind CSS v4
+  src: "https://picsum.photos/800/400?random=10"
+  alt: "Implementacion Selector Temas Daisyui"
 ---
 
 En esta guía te mostraré cómo implementar un selector de temas completamente funcional usando DaisyUI v5 con Tailwind CSS v4 en NuxtFast. El selector incluye soporte para tema claro, oscuro y detección automática del sistema.
@@ -211,4 +210,4 @@ Agregamos el selector al layout del blog en `layouts/blog.vue`:
 
 ---
 
-*Esta implementación proporciona una base sólida para el manejo de temas en aplicaciones modernas con Tailwind CSS v4 y DaisyUI v5.* 
+*Esta implementación proporciona una base sólida para el manejo de temas en aplicaciones modernas con Tailwind CSS v4 y DaisyUI v5.*

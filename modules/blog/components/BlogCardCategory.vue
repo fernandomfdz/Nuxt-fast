@@ -1,5 +1,6 @@
 <template>
   <NuxtLink
+    v-if="category && category.title"
     :to="`/blog/category/${category.slug || category.title.toLowerCase().replace(/\s+/g, '-')}`"
     class="group block p-6 bg-base-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300 hover:border-primary/30"
   >

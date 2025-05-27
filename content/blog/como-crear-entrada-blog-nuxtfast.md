@@ -1,16 +1,15 @@
 ---
-title: Cómo Crear una Entrada de Blog en NuxtFast - Guía Completa
-description: Aprende paso a paso cómo crear, configurar y publicar entradas de blog en NuxtFast. Desde el frontmatter hasta las categorías y autores.
-publishedAt: 2024-01-17
-categories:
-  - slug: tutorial
-  - slug: development
+title: "Como Crear Entrada Blog Nuxtfast"
+description: "Artículo sobre como crear entrada blog nuxtfast"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=11
-  urlRelative: https://picsum.photos/800/400?random=11
-  alt: Crear entrada de blog en NuxtFast
+  src: "https://picsum.photos/800/400?random=6"
+  alt: "Como Crear Entrada Blog Nuxtfast"
 ---
 
 ¿Acabas de descargar NuxtFast y quieres crear tu primera entrada de blog? ¡Perfecto! En esta guía te explico todo lo que necesitas saber para crear contenido increíble desde el primer día.
@@ -537,4 +536,4 @@ files.forEach(file => {
 
 ---
 
-*¿Te ha gustado esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad de NuxtFast.* 🚀 
+*¿Te ha gustado esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad de NuxtFast.* 🚀

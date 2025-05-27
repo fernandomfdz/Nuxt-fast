@@ -1,16 +1,15 @@
 ---
-title: Guía Completa para Empezar con NuxtFast
-description: Aprende a configurar y usar NuxtFast desde cero. Una guía paso a paso para desarrolladores que quieren crear aplicaciones web modernas rápidamente.
-publishedAt: 2024-01-15
-categories:
-  - slug: tutorial
-  - slug: nuxt
+title: "Getting Started Nuxtfast"
+description: "Artículo sobre getting started nuxtfast"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: https://picsum.photos/800/400?random=3
-  urlRelative: https://picsum.photos/800/400?random=3
-  alt: NuxtFast getting started guide
+  src: "https://picsum.photos/800/400?random=9"
+  alt: "Getting Started Nuxtfast"
 ---
 
 ¡Bienvenido a NuxtFast! En esta guía te enseñaremos todo lo que necesitas saber para empezar a desarrollar aplicaciones web modernas con nuestro stack optimizado.
@@ -221,4 +220,4 @@ Ahora que tienes NuxtFast funcionando, puedes:
 
 ---
 
-*¡Felicidades! Ya tienes todo listo para crear aplicaciones increíbles con NuxtFast. 🚀* 
+*¡Felicidades! Ya tienes todo listo para crear aplicaciones increíbles con NuxtFast. 🚀*

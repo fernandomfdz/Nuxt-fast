@@ -1,15 +1,15 @@
 ---
-title: 'Mejoras del Sistema de Categorías y Artículos Relacionados'
-description: 'Nuevas funcionalidades implementadas en el blog: contadores de categorías funcionales, filtros mejorados y sistema de artículos relacionados inteligente'
-publishedAt: '2024-01-18'
-categories:
-  - slug: feature
-  - slug: development
+title: "Mejoras Sistema Categorias Articulos Relacionados"
+description: "Artículo sobre mejoras sistema categorias articulos relacionados"
+publishedAt: "2025-05-27"
 author:
-  slug: fer
+  - slug: fer
+categories:
+  - slug: "general"
+    title: "General"
 image:
-  src: 'https://picsum.photos/800/400?random=15'
-  alt: 'Sistema de categorías y artículos relacionados mejorado'
+  src: "https://picsum.photos/800/400?random=14"
+  alt: "Mejoras Sistema Categorias Articulos Relacionados"
 ---
 
 # Mejoras del Sistema de Categorías y Artículos Relacionados
@@ -229,4 +229,4 @@ categories:
 
 ---
 
-*Estas mejoras fortalecen significativamente la experiencia de navegación y descubrimiento de contenido en NuxtFast, proporcionando una base sólida para futuras funcionalidades del blog.* 
+*Estas mejoras fortalecen significativamente la experiencia de navegación y descubrimiento de contenido en NuxtFast, proporcionando una base sólida para futuras funcionalidades del blog.*
