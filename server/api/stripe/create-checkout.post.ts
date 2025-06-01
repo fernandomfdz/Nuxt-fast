@@ -1,4 +1,4 @@
-import { getServerSession } from '#auth'
+import { getServerSession } from '~/server/utils/auth'
 import { connectToDatabase } from '~/server/utils/mongoose'
 import { User } from '~/server/models/User'
 import Stripe from 'stripe'
@@ -52,8 +52,8 @@ export default defineEventHandler(async (event) => {
           quantity: 1,
         },
       ],
-      success_url: successUrl || `${config.auth.callbackUrl}?success=true`,
-      cancel_url: cancelUrl || config.auth.callbackUrl,
+      success_url: successUrl || `${config.modules?.auth?.callbackUrl || '/dashboard'}?success=true`,
+      cancel_url: cancelUrl || config.modules?.auth?.callbackUrl || '/dashboard',
       customer_email: session?.user?.email || undefined,
       metadata: {
         userId: user?._id?.toString() || '',

@@ -3,7 +3,11 @@ import { config } from '~/config'
 
 const route = useRoute()
 
-const navItems = [
+// Obtener módulos habilitados
+const { enabledModules } = useNuxtFastModules()
+
+// Items de navegación base
+const baseNavItems = [
   {
     name: 'Dashboard',
     href: '/dashboard',
@@ -17,6 +21,34 @@ const navItems = [
     current: route.path === '/dashboard/settings'
   }
 ]
+
+// Items de navegación dinámicos basados en módulos habilitados
+const dynamicNavItems = computed(() => {
+  const items: Array<{
+    name: string
+    href: string
+    icon: string
+    current: boolean
+  }> = []
+
+  // Agregar Organizaciones si está habilitado
+  if (enabledModules.value.includes('organizations') && config.modules?.organizations?.enabled) {
+    items.push({
+      name: 'Organizaciones',
+      href: '/settings/organizations',
+      icon: 'heroicons:building-office',
+      current: route.path.startsWith('/settings/organizations')
+    })
+  }
+
+  return items
+})
+
+// Items de navegación combinados
+const navItems = computed(() => [
+  ...baseNavItems,
+  ...dynamicNavItems.value
+])
 </script>
 
 <template>

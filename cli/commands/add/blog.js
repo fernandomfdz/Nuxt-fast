@@ -1,6 +1,7 @@
 import { promises as fs, existsSync  } from 'fs'
 import { join } from 'path'
 import { createInterface } from 'readline'
+import { ConfigManager } from '../../utils/config-manager.js'
 
 export async function addBlog() {
   console.log('🚀 Procesando módulo blog de NuxtFast...\n')
@@ -61,21 +62,21 @@ export async function addBlog() {
 
 async function checkIfBlogInstalled() {
   const configPath = join(process.cwd(), 'config.ts')
-  const contentBlogPath = join(process.cwd(), 'content', 'blog')
+  const contentConfigPath = join(process.cwd(), 'content.config.ts')
   
   if (!existsSync(configPath)) {
     return false
   }
   
-  const configContent = await fs.readFile(configPath, 'utf-8')
-  const hasBlogConfig = configContent.includes('blog:') && configContent.includes('modules:')
-  const hasBlogFolder = existsSync(contentBlogPath)
+  const configManager = new ConfigManager()
+  const hasBlogConfig = await configManager.hasModule('blog')
+  const hasContentConfig = existsSync(contentConfigPath)
   
-  return hasBlogConfig && hasBlogFolder
+  return hasBlogConfig || hasContentConfig
 }
 
 async function createNewArticle(readline) {
-  console.log('\n📝 Creando nuevo artículo...\n')
+  console.log('\n📝 Crear nuevo artículo\n')
   
   // Obtener título del artículo
   const title = await new Promise((resolve) => {
@@ -262,50 +263,16 @@ async function updateConfigFile() {
   
   console.log('📝 Actualizando config.ts...')
   
-  let configContent = await fs.readFile(configPath, 'utf-8')
+  const configManager = new ConfigManager()
   
-  // Verificar si ya existe la configuración de módulos
-  if (configContent.includes('modules:')) {
-    // Ya existe la sección modules, verificar si blog ya está configurado
-    if (configContent.includes('blog:')) {
-      console.log('   ℹ️  El módulo blog ya está configurado en config.ts')
-      return
-    }
-    
-    // Añadir blog a la sección modules existente
-    const modulesRegex = /(modules:\s*{[^}]*)(})/s
-    const match = configContent.match(modulesRegex)
-    
-    if (match) {
-      const beforeClosing = match[1]
-      const hasOtherModules = beforeClosing.trim().endsWith(',') || beforeClosing.includes(':')
-      const blogConfig = hasOtherModules ? ',\n    blog: true' : '\n    blog: true'
-      
-      configContent = configContent.replace(
-        modulesRegex,
-        `${beforeClosing}${blogConfig}\n  $2`
-      )
-    }
-  } else {
-    // No existe la sección modules, añadirla antes del cierre del objeto
-    const insertPoint = configContent.lastIndexOf('} as const;')
-    
-    if (insertPoint === -1) {
-      throw new Error('No se pudo encontrar el punto de inserción en config.ts')
-    }
-    
-    const modulesSection = `,
-
-  // === MÓDULOS DE NUXTFAST ===
-  modules: {
-    blog: true
-  }`
-    
-    configContent = configContent.slice(0, insertPoint) + modulesSection + configContent.slice(insertPoint)
+  // Verificar si el módulo blog ya está configurado
+  if (await configManager.hasModule('blog')) {
+    console.log('   ℹ️  El módulo blog ya está configurado en config.ts')
+    return
   }
   
-  await fs.writeFile(configPath, configContent, 'utf-8')
-  console.log('   ✅ config.ts actualizado')
+  // Añadir módulo blog
+  await configManager.addModule('blog', true)
 }
 
 async function checkContentBlogFolder() {

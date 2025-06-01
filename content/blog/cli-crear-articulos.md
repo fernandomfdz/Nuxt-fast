@@ -4,7 +4,7 @@ description: "Descubre la nueva funcionalidad del CLI de NuxtFast que te permite
 publishedAt: "2024-01-16"
 author:
   - slug: fer
-  avatar: "/avatars/team.jpg"
+    avatar: "/avatars/team.jpg"
 categories:
   - slug: "cli"
     title: "CLI"

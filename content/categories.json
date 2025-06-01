@@ -1,0 +1,26 @@
+[
+  {
+    "id": "tutorial",
+    "name": "Tutorial",
+    "description": "Guías paso a paso y tutoriales",
+    "color": "#3B82F6"
+  },
+  {
+    "id": "desarrollo",
+    "name": "Desarrollo",
+    "description": "Artículos sobre desarrollo web y programación",
+    "color": "#10B981"
+  },
+  {
+    "id": "noticias",
+    "name": "Noticias",
+    "description": "Últimas noticias y actualizaciones",
+    "color": "#F59E0B"
+  },
+  {
+    "id": "bienvenida",
+    "name": "Bienvenida",
+    "description": "Artículos de bienvenida y introducción",
+    "color": "#8B5CF6"
+  }
+]

@@ -9,7 +9,7 @@ watch(() => useRoute().fullPath, () => {
 })
 
 // Obtener enlaces de todos los módulos habilitados
-const { getAllNavigationLinks } = useNuxtFastModules()
+const { getAllNavigationLinks, enabledModules } = useNuxtFastModules()
 
 // Combinar enlaces de configuración con enlaces de módulos
 const allNavigationLinks = computed(() => {
@@ -75,7 +75,7 @@ const allNavigationLinks = computed(() => {
 
       <!-- CTA en pantallas grandes -->
       <div class="hidden lg:flex lg:justify-end lg:flex-1 gap-2">
-        <ButtonSignin extra-style="btn-primary" />
+        <AuthButton v-if="enabledModules.includes('auth')" />
         <ThemeSelector/>
       </div>
     </nav>
@@ -135,7 +135,7 @@ const allNavigationLinks = computed(() => {
           <div class="divider" />
           <!-- CTA en pantallas pequeñas -->
           <div class="flex flex-col">
-            <ButtonSignin extra-style="btn-primary" />
+            <AuthButton v-if="enabledModules.includes('auth')" />
           </div>
         </div>
       </div>

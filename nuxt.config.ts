@@ -1,5 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
-import { getNuxtModules, getModuleConfigs } from './utils/modules'
+import { getNuxtModules, getModuleConfigs, getModuleEnvironmentVariables, getPublicModuleEnvironmentVariables } from './utils/modules'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -19,7 +19,6 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
     '@nuxt/ui',
-    '@sidebase/nuxt-auth',
     '@nuxtjs/sitemap',
     '@vueuse/nuxt',
     // Módulos de NuxtFast configurados automáticamente desde config.ts
@@ -62,19 +61,21 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    authSecret: process.env.AUTH_SECRET,
-    googleId: process.env.GOOGLE_ID,
-    googleSecret: process.env.GOOGLE_SECRET,
+    // Variables de entorno privadas (servidor)
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     mongodbUri: process.env.MONGODB_URI,
     resendApiKey: process.env.RESEND_API_KEY,
+    // Variables de entorno de módulos (privadas)
+    ...getModuleEnvironmentVariables(),
+    
     public: {
-      authUrl: process.env.AUTH_ORIGIN || 'http://localhost:3000',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
       appName: 'NuxtFast',
       // Configuración de módulos desde config.ts
-      ...getModuleConfigs()
+      ...getModuleConfigs(),
+      // Variables de entorno públicas de módulos
+      ...getPublicModuleEnvironmentVariables()
     }
   },
 

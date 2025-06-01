@@ -9,14 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import { Crisp } from 'crisp-sdk-web'
+//import { Crisp } from 'crisp-sdk-web'
 import { config } from '~/config'
 
 // Configuración de Crisp
-const route = useRoute()
-const { data: session } = useAuth()
+//const route = useRoute()
+//const { data: session } = useAuth()
 
-// Configurar Crisp cuando cambie la ruta
+/* // Configurar Crisp cuando cambie la ruta
 watch(() => route.path, (path) => {
   if (config.crisp?.id) {
     Crisp.configure(config.crisp.id)
@@ -36,5 +36,5 @@ watch(() => session.value?.user, (user) => {
   if (user && config.crisp?.id) {
     Crisp.session.setData({ userId: user.id })
   }
-}, { immediate: true })
+}, { immediate: true }) */
 </script> 

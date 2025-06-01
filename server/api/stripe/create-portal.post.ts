@@ -1,4 +1,4 @@
-import { getServerSession } from '#auth'
+import { getServerSession } from '~/server/utils/auth'
 import { connectToDatabase } from '~/server/utils/mongoose'
 import { User } from '~/server/models/User'
 import Stripe from 'stripe'

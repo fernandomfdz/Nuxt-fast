@@ -275,15 +275,107 @@ export const config = {
     // OR you can just do this to use a custom color: main: "#f37055". HEX only.
     main: "#f37055"
   },
-  auth: {
-    // REQUIRED — the path to log in users. It's use to protect private routes (like /dashboard). It's used in apiClient (/libs/api.js) upon 401 errors from our API
-    loginUrl: "/api/auth/signin",
-    // REQUIRED — the path you want to redirect users after successfull login (i.e. /dashboard, /private). This is normally a private page for users to manage their accounts. It's used in apiClient (/libs/api.js) upon 401 errors from our API & in ButtonSignin.js
-    callbackUrl: "/dashboard"
-  },
 
   // === MÓDULOS DE NUXTFAST ===
   modules: {
-    blog: true
+    blog: true,
+    auth: {
+      enabled: true,
+      emailAndPassword: true,
+      showInNavigation: false,
+      // URLs de autenticación - corregidas para coincidir con el módulo
+      loginPath: "/auth/signin",
+      registerPath: "/auth/signup",
+      profilePath: "/auth/profile", 
+      callbackPath: "/auth/callback",
+      // URLs de redirección (para compatibilidad)
+      loginUrl: "/auth/signin",
+      callbackUrl: "/dashboard", 
+      // Proveedores sociales - solo incluir si las variables están disponibles
+      socialProviders: {
+        google: {
+          clientId: process.env.GOOGLE_CLIENT_ID, // Se llenará automáticamente desde GOOGLE_CLIENT_ID
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET // Se llenará automáticamente desde GOOGLE_CLIENT_SECRET
+        }
+      },
+      // Plugins de Better Auth
+      plugins: {
+        twoFactor: {
+          enabled: false,
+          issuer: "NuxtFast", // Nombre que aparece en apps de autenticación
+          otpOptions: {
+            period: 30,
+            digits: 6
+          }
+        },
+        emailOTP: {
+          enabled: false,
+          expiresIn: 300, // 5 minutos en segundos
+          sendVerificationOTP: {
+            // Configuración del proveedor de email (Resend, etc.)
+            provider: "resend"
+          }
+        },
+        oAuthProxy: {
+          enabled: false,
+          // Útil para desarrollo con diferentes URLs
+        },
+        adminPanel: {
+          enabled: false,
+          // Panel de administración para gestionar usuarios
+          adminEmails: [] // Lista de emails con acceso admin
+        }
+      }
+    },
+    organizations: {
+      enabled: true,
+      showInNavigation: true,
+      // URLs de organizaciones - cambiadas a settings/organizations
+      listUrl: "/organizations",
+      createUrl: "/organizations/create",
+      dashboardUrl: "/organizations/dashboard",
+      // Configuraciones de organización
+      allowUserToCreateOrganization: true,
+      organizationLimit: 5, // Máximo 5 organizaciones por usuario
+      membershipLimit: 100, // Máximo 100 miembros por organización
+      creatorRole: "owner", // Rol del creador: "owner" o "admin"
+      // Invitaciones
+      invitationExpiresIn: 172800, // 48 horas (2 días) en segundos
+      invitationLimit: 50, // Máximo 50 invitaciones por organización
+      cancelPendingInvitationsOnReInvite: true,
+      // Teams (equipos dentro de organizaciones)
+      teams: {
+        enabled: true,
+        maximumTeams: 10, // Máximo 10 equipos por organización
+        allowRemovingAllTeams: false // No permitir eliminar todos los equipos
+      },
+      // Roles y permisos
+      roles: {
+        owner: {
+          name: "Propietario",
+          permissions: ["*"] // Todos los permisos
+        },
+        admin: {
+          name: "Administrador", 
+          permissions: [
+            "organization:read",
+            "organization:update",
+            "member:invite",
+            "member:remove",
+            "member:update-role",
+            "team:create",
+            "team:update",
+            "team:delete"
+          ]
+        },
+        member: {
+          name: "Miembro",
+          permissions: [
+            "organization:read",
+            "team:read"
+          ]
+        }
+      }
+    }
   }
 } as const;

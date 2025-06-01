@@ -1,22 +1,23 @@
 ---
 title: "Como Configurar Login Nuxtfast"
-description: "Artículo sobre como configurar login nuxtfast"
-publishedAt: "2025-05-27"
+description: "Guía completa para configurar el sistema de autenticación en NuxtFast usando Better Auth"
+publishedAt: "2024-01-12"
 author:
   - slug: fer
+    avatar: "/avatars/team.jpg"
 categories:
-  - slug: "general"
-    title: "General"
+  - slug: "tutorial"
+    title: "Tutorial"
+  - slug: "autenticacion"
+    title: "Autenticación"
 image:
-  src: "https://picsum.photos/800/400?random=5"
+  src: "https://picsum.photos/800/400?random=4"
   alt: "Como Configurar Login Nuxtfast"
 ---
 
-¿Quieres implementar un sistema de autenticación robusto en tu aplicación NuxtFast? En esta guía te explico paso a paso cómo configurar Google OAuth, magic links, proteger rutas y gestionar usuarios.
+# Cómo Configurar Login en NuxtFast
 
-## 🔐 Introducción al Sistema de Auth
-
-NuxtFast incluye un sistema de autenticación completo basado en **@sidebase/nuxt-auth** que te proporciona:
+NuxtFast incluye un sistema de autenticación completo basado en **Better Auth** que te proporciona:
 
 - 🔑 **Google OAuth** - Login con Google
 - ✉️ **Magic Links** - Login sin contraseña por email
@@ -983,5 +984,5 @@ export default defineEventHandler(async (event) => {
 
 ---
 
-*¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* 🚀
+*¿Te ha sido útil esta guía? Compártela con otros desarrolladores y ayúdanos a hacer crecer la comunidad.* ��
 </rewritten_file>

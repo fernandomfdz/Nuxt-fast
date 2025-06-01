@@ -1,71 +1,48 @@
 ---
-title: "Configuración de Autenticación con MongoDB"
-description: "Guía completa para configurar autenticación segura con MongoDB en NuxtFast."
+title: "Configuración de Autenticación con Better Auth y MongoDB"
+description: "Guía completa para configurar autenticación usando Better Auth con MongoDB en NuxtFast"
 publishedAt: "2024-01-15"
 author:
   - slug: fer
+    avatar: "/avatars/team.jpg"
 categories:
   - slug: "tutorial"
     title: "Tutorial"
-  - slug: "database"
-    title: "Base de Datos"
-  - slug: "auth"
+  - slug: "autenticacion"
     title: "Autenticación"
+  - slug: "mongodb"
+    title: "MongoDB"
 image:
-  src: "https://picsum.photos/800/400?random=18"
-  alt: "Configuración de autenticación con MongoDB"
+  src: "https://picsum.photos/800/400?random=6"
+  alt: "Configuración de Autenticación con Better Auth y MongoDB"
 ---
 
-# Configuración de MongoDB y Autenticación en NuxtFast
+# Configuración de Autenticación con Better Auth y MongoDB
 
-En esta guía te mostraré cómo configurar MongoDB Atlas y el sistema de autenticación completo en NuxtFast. Aprenderás a conectar tu base de datos, configurar proveedores de autenticación y manejar usuarios de forma segura.
+Esta guía te ayudará a configurar el sistema de autenticación de NuxtFast usando **Better Auth** con **MongoDB** como base de datos.
 
-## 🗄️ Configuración de MongoDB Atlas
+## 🚀 Instalación Rápida
 
-### Paso 1: Crear una cuenta en MongoDB Atlas
-
-1. Ve a [MongoDB Atlas](https://www.mongodb.com/atlas)
-2. Crea una cuenta gratuita
-3. Verifica tu email
-
-### Paso 2: Crear un cluster
-
-1. Haz clic en "Create a New Cluster"
-2. Selecciona la opción gratuita (M0 Sandbox)
-3. Elige la región más cercana a tus usuarios
-4. Dale un nombre a tu cluster
-
-### Paso 3: Configurar acceso a la base de datos
-
+### Usando el CLI de NuxtFast
 ```bash
-# Crear un usuario de base de datos
-Username: nuxtfast_user
-Password: [genera una contraseña segura]
+npx nuxtfast add auth
 ```
 
-### Paso 4: Configurar acceso de red
+Este comando instalará automáticamente:
+- Better Auth como proveedor de autenticación
+- Configuración optimizada para MongoDB
+- Todas las dependencias necesarias
 
-1. Ve a "Network Access"
-2. Agrega tu IP actual
-3. Para desarrollo, puedes usar `0.0.0.0/0` (no recomendado para producción)
-
-### Paso 5: Obtener la cadena de conexión
-
-```bash
-mongodb+srv://nuxtfast_user:<password>@cluster0.xxxxx.mongodb.net/nuxtfast?retryWrites=true&w=majority
-```
-
-## 🔐 Configuración de Autenticación
-
-### Instalación de dependencias
+### Instalación Manual
+Si prefieres instalarlo manualmente:
 
 ```bash
-npm install @sidebase/nuxt-auth
-npm install @auth/mongodb-adapter
-npm install mongodb
+npm install better-auth mongodb
 ```
 
-### Configuración en nuxt.config.ts
+## 📦 Configuración en nuxt.config.ts
+
+El módulo de autenticación se configura automáticamente, pero aquí está la estructura interna:
 
 ```typescript
 export default defineNuxtConfig({

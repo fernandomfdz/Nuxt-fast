@@ -1,13 +1,13 @@
 <template>
   <NuxtLink
-    v-if="status === 'authenticated'"
-    :to="config.auth.callbackUrl"
+    v-if="isAuthenticated"
+    :to="config.modules?.auth?.callbackUrl || '/dashboard'"
     :class="['btn', extraStyle]"
   >
     <img
-      v-if="session?.user?.image"
-      :src="session.user.image"
-      :alt="session.user?.name || 'Account'"
+      v-if="user?.image"
+      :src="user.image"
+      :alt="user?.name || 'Account'"
       class="w-6 h-6 rounded-full shrink-0"
       referrerpolicy="no-referrer"
       width="24"
@@ -17,19 +17,19 @@
       v-else
       class="w-6 h-6 bg-base-300 flex justify-center items-center rounded-full shrink-0"
     >
-      {{ session.user?.name?.charAt(0) || session.user?.email?.charAt(0) }}
+      {{ user?.name?.charAt(0) || user?.email?.charAt(0) }}
     </span>
-    {{ session.user?.name || session.user?.email || 'Account' }}
+    {{ user?.name || user?.email || 'Account' }}
   </NuxtLink>
 
   <button
     v-else
     :class="['btn', extraStyle]"
-    :disabled="status === 'loading'"
+    :disabled="isLoading"
     @click="handleClick"
   >
-    <span v-if="status === 'loading'" class="loading loading-spinner loading-sm"/>
-    {{ status === 'loading' ? 'Cargando...' : text }}
+    <span v-if="isLoading" class="loading loading-spinner loading-sm"/>
+    {{ isLoading ? 'Cargando...' : text }}
   </button>
 </template>
 
@@ -43,17 +43,14 @@ const props = defineProps<{
 
 const { text = 'Get started' } = props
 
-const { status, data: session, signIn } = useAuth()
+const { isAuthenticated, user, signInWithProvider, isLoading } = useAuth()
 
 const handleClick = async () => {
-  if (status.value === 'authenticated') {
-    await navigateTo(config.auth.callbackUrl)
+  if (isAuthenticated.value) {
+    await navigateTo(config.modules?.auth?.callbackUrl || '/dashboard')
   } else {
     try {
-      await signIn('google', { 
-        callbackUrl: config.auth.callbackUrl,
-        redirect: true 
-      })
+      await signInWithProvider('google')
     } catch (error) {
       console.error('Error al iniciar sesión:', error)
     }

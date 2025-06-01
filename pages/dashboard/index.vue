@@ -1,5 +1,11 @@
 <script setup lang="ts">
-// El middleware global dashboard.global.ts protege automáticamente esta ruta
+// Usar el layout dashboard
+definePageMeta({
+  layout: 'dashboard'
+})
+
+// Obtener información del usuario autenticado
+const { user } = useAuth()
 
 // Meta tags específicos para la página del dashboard
 useHead({
@@ -12,45 +18,96 @@ useHead({
 </script>
 
 <template>
-  <div class="min-h-screen bg-base-100">
-    <!-- Navegación del Dashboard -->
-    <DashboardNav />
-    
-    <!-- Contenido Principal -->
-    <main class="p-8 pb-24">
-      <section class="max-w-xl mx-auto space-y-8">
-        <ButtonAccount />
+  <div class="p-8 pb-24">
+    <section class="max-w-4xl mx-auto space-y-8">
+      <!-- Header del Dashboard -->
+      <div class="text-center space-y-4">
         <h1 class="text-3xl md:text-4xl font-extrabold">
-          Página Privada
+          Panel de Control
         </h1>
-        
-        <!-- Contenido adicional del dashboard -->
-        <div class="space-y-6">
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <h2 class="card-title">¡Bienvenido a tu Dashboard!</h2>
-              <p>Esta es una página privada protegida por autenticación.</p>
-              <p class="text-sm text-base-content/70">
-                Solo los usuarios autenticados pueden ver este contenido.
-              </p>
-            </div>
-          </div>
-          
+        <p v-if="user" class="text-lg text-base-content/70">
+          ¡Bienvenido, {{ user.name || user.email }}!
+        </p>
+      </div>
+      
+      <!-- Información del Usuario -->
+      <div v-if="user" class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">
+            <Icon name="heroicons:user-circle" class="w-6 h-6" />
+            Tu Perfil
+          </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="stat bg-base-200 rounded-lg">
-              <div class="stat-title">Estado</div>
-              <div class="stat-value text-primary">Activo</div>
-              <div class="stat-desc">Sesión autenticada</div>
+            <div>
+              <p class="text-sm text-base-content/70">Nombre</p>
+              <p class="font-medium">{{ user.name || 'No especificado' }}</p>
             </div>
-            
-            <div class="stat bg-base-200 rounded-lg">
-              <div class="stat-title">Acceso</div>
-              <div class="stat-value text-secondary">Completo</div>
-              <div class="stat-desc">Todas las funciones disponibles</div>
+            <div>
+              <p class="text-sm text-base-content/70">Email</p>
+              <p class="font-medium">{{ user.email }}</p>
+            </div>
+            <div v-if="user.image">
+              <p class="text-sm text-base-content/70">Avatar</p>
+              <div class="avatar">
+                <div class="w-12 h-12 rounded-full">
+                  <img :src="user.image" :alt="user.name || 'Avatar'" >
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm text-base-content/70">Cuenta creada</p>
+              <p class="font-medium">{{ user.createdAt ? new Date(user.createdAt).toLocaleDateString('es-ES') : 'No disponible' }}</p>
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+      
+      <!-- Estadísticas del Dashboard -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="stat bg-base-200 rounded-lg">
+          <div class="stat-figure text-primary">
+            <Icon name="heroicons:check-circle" class="w-8 h-8" />
+          </div>
+          <div class="stat-title">Estado</div>
+          <div class="stat-value text-primary">Activo</div>
+          <div class="stat-desc">Sesión autenticada</div>
+        </div>
+        
+        <div class="stat bg-base-200 rounded-lg">
+          <div class="stat-figure text-secondary">
+            <Icon name="heroicons:key" class="w-8 h-8" />
+          </div>
+          <div class="stat-title">Acceso</div>
+          <div class="stat-value text-secondary">Completo</div>
+          <div class="stat-desc">Todas las funciones disponibles</div>
+        </div>
+        
+        <div class="stat bg-base-200 rounded-lg">
+          <div class="stat-figure text-accent">
+            <Icon name="heroicons:shield-check" class="w-8 h-8" />
+          </div>
+          <div class="stat-title">Seguridad</div>
+          <div class="stat-value text-accent">Segura</div>
+          <div class="stat-desc">Conexión protegida</div>
+        </div>
+      </div>
+
+      <!-- Acciones Rápidas -->
+      <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">
+            <Icon name="heroicons:cog-6-tooth" class="w-6 h-6" />
+            Acciones Rápidas
+          </h2>
+          <div class="flex flex-wrap gap-4 mt-4">
+            <NuxtLink to="/dashboard/settings" class="btn btn-primary">
+              <Icon name="heroicons:cog-6-tooth" class="w-4 h-4" />
+              Configuración
+            </NuxtLink>
+            <ButtonAccount />
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template> 

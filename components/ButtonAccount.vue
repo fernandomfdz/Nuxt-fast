@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const { data: session, status } = useAuth()
+const { session, signOut, isAuthenticated } = useAuth()
 const isLoading = ref(false)
-const showButton = ref(false)
 
-const handleSignOut = () => {
-  const { signOut } = useAuth()
-  signOut({ callbackUrl: '/' })
+const handleSignOut = async () => {
+  try {
+    await signOut()
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+  }
 }
 
 const handleBilling = async () => {
@@ -28,17 +30,10 @@ const handleBilling = async () => {
 
   isLoading.value = false
 }
-
-// No mostrar nada si no está autenticado
-if (status.value === 'unauthenticated') { 
-  showButton.value = false
-} else {
-  showButton.value = true
-}
 </script>
 
 <template>
-  <div v-if="showButton" class="dropdown dropdown-end">
+  <div v-if="isAuthenticated" class="dropdown dropdown-end">
     <div tabindex="0" role="button" class="btn btn-ghost gap-2 flex items-center">
       <div 
         v-if="session?.user?.image"

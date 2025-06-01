@@ -4,14 +4,10 @@ description: "Hemos mejorado el comando de añadir blog para una mejor organizac
 publishedAt: "2024-12-19"
 author:
   - slug: fer
-  avatar: "/avatars/team.jpg"
 categories:
-  - slug: "actualizacion"
-    title: "Actualización"
-  - slug: "cli"
-    title: "CLI"
-  - slug: "blog"
-    title: "Blog"
+  - slug: actualizacion
+  - slug: cli
+  - slug: blog
 image:
   src: "https://picsum.photos/800/400?random=13"
   alt: "Mejoras en el comando blog"
