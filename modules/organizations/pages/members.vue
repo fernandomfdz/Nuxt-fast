@@ -1,4 +1,4 @@
-<!-- OrganizationMembersPage -->
+<!-- OrganizationsMembersPage -->
 <template>
   <div class="min-h-screen bg-base-100">
     <!-- Header -->

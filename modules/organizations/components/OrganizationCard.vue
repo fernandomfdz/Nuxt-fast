@@ -1,92 +1,74 @@
 <template>
   <div 
-    class="card bg-base-200 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
-    :class="{ 'ring-2 ring-primary': isActive }"
-    @click="$emit('select', organization)"
+    class="card bg-base-200 hover:bg-base-300 transition-colors border cursor-pointer"
+    :class="{ 'border-primary': isActive }"
+    @click="handleSetActive"
   >
     <div class="card-body">
-      <!-- Header con logo y nombre -->
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-3">
-          <div 
-            v-if="organization.logo"
-            class="w-12 h-12 rounded-lg overflow-hidden"
-          >
-            <img
-              :src="organization.logo"
-              :alt="`Logo de ${organization.name}`"
-              class="w-full h-full object-cover"
-            >
-          </div>
-          <div
-            v-else
-            class="w-12 h-12 bg-primary text-primary-content rounded-lg flex items-center justify-center font-bold text-lg"
-          >
-            {{ organization.name.charAt(0).toUpperCase() }}
-          </div>
-          
-          <div>
-            <h3 class="font-semibold text-lg">{{ organization.name }}</h3>
-            <p class="text-sm text-base-content/70">@{{ organization.slug }}</p>
+      <!-- Logo y nombre -->
+      <div class="flex items-center gap-3 mb-3">
+        <div class="avatar">
+          <div class="w-12 h-12 rounded-full bg-neutral text-neutral-content flex items-center justify-center">
+            <Icon 
+              v-if="organization.metadata?.logo" 
+              :name="organization.metadata.logo" 
+              class="w-6 h-6" 
+            />
+            <Icon v-else name="heroicons:building-office" class="w-6 h-6" />
           </div>
         </div>
-        
-        <!-- Badge de activa -->
-        <div v-if="isActive" class="badge badge-primary">
+        <div class="flex-1">
+          <h3 class="font-semibold text-lg truncate">{{ organization.name }}</h3>
+          <p class="text-sm text-base-content/70 truncate">{{ organization.slug }}</p>
+        </div>
+      </div>
+      
+      <!-- Descripción -->
+      <p v-if="organization.metadata?.description" class="text-sm text-base-content/70 mb-4 line-clamp-2">
+        {{ organization.metadata.description }}
+      </p>
+      
+      <!-- Información adicional -->
+      <div class="text-xs text-base-content/50 mb-4">
+        Creada: {{ new Date(organization.createdAt).toLocaleDateString('es-ES') }}
+      </div>
+      
+      <!-- Acciones -->
+      <div v-if="showActions" class="card-actions justify-between items-center">
+        <button 
+          v-if="!isActive"
+          class="btn btn-sm btn-outline btn-primary"
+          @click.stop="handleSetActive"
+        >
+          Activar
+        </button>
+        <div v-else class="badge badge-primary badge-sm">
           Activa
         </div>
-      </div>
-
-      <!-- Metadatos -->
-      <div v-if="organization.metadata" class="text-sm text-base-content/70 mb-4">
-        <p v-if="organization.metadata.description">
-          {{ organization.metadata.description }}
-        </p>
-      </div>
-
-      <!-- Acciones -->
-      <div class="card-actions justify-between items-center">
-        <div class="text-xs text-base-content/50">
-          Creada {{ formatDate(organization.createdAt) }}
-        </div>
         
-        <div class="flex space-x-2">
-          <button
-            class="btn btn-primary btn-sm"
-            @click.stop="$emit('select', organization)"
+        <div class="flex gap-1">
+          <NuxtLink 
+            :to="`/organizations/${organization.id}/dashboard`" 
+            class="btn btn-sm btn-ghost"
+            title="Dashboard"
+            @click.stop
           >
-            {{ isActive ? 'Ir al Dashboard' : 'Seleccionar' }}
+            <Icon name="heroicons:cog-6-tooth" class="w-4 h-4" />
+          </NuxtLink>
+          <button 
+            class="btn btn-sm btn-ghost"
+            title="Editar"
+            @click.stop="emit('edit', organization)"
+          >
+            <Icon name="heroicons:pencil" class="w-4 h-4" />
           </button>
-          
-          <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
-              <Icon name="heroicons:ellipsis-vertical" class="w-4 h-4" />
-            </div>
-            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-              <li>
-                <button @click.stop="$emit('select', organization)">
-                  <Icon name="heroicons:arrow-top-right-on-square" class="w-4 h-4" />
-                  Ir al Dashboard
-                </button>
-              </li>
-              <li>
-                <button @click.stop="copyInviteLink">
-                  <Icon name="heroicons:link" class="w-4 h-4" />
-                  Copiar Enlace de Invitación
-                </button>
-              </li>
-              <li><hr></li>
-              <li>
-                <button 
-                  class="text-error hover:bg-error/10"
-                  @click.stop="$emit('leave', organization)"
-                >
-                  <Icon name="heroicons:arrow-left-on-rectangle" class="w-4 h-4" />
-                  Salir de Organización
-                </button>
-              </li>
-            </ul>
-          </div>
+          <button 
+            class="btn btn-sm btn-ghost text-error"
+            title="Eliminar"
+            @click.stop="emit('delete', organization)"
+          >
+            <Icon name="heroicons:trash" class="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>
@@ -94,41 +76,46 @@
 </template>
 
 <script setup lang="ts">
-interface OrganizationProp {
+interface Organization {
   id: string
   name: string
   slug: string
-  logo?: string
-  metadata?: Record<string, unknown>
+  metadata?: {
+    description?: string
+    logo?: string
+  }
   createdAt: string
 }
 
 interface Props {
-  organization: OrganizationProp
+  organization: Organization
   isActive?: boolean
+  showActions?: boolean
 }
 
-interface Emits {
-  select: [organization: OrganizationProp]
-  leave: [organization: OrganizationProp]
-}
+const props = withDefaults(defineProps<Props>(), {
+  isActive: false,
+  showActions: true
+})
 
-defineProps<Props>()
-defineEmits<Emits>()
+const emit = defineEmits<{
+  'set-active': [organizationId: string]
+  'edit': [organization: Organization]
+  'delete': [organization: Organization]
+}>()
 
-// Formatear fecha
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
+const handleSetActive = () => {
+  if (!props.isActive) {
+    emit('set-active', props.organization.id)
+  }
 }
+</script>
 
-// Copiar enlace de invitación (placeholder)
-const copyInviteLink = () => {
-  // TODO: Implementar lógica para generar y copiar enlace de invitación
-  console.log('Copiar enlace de invitación - TODO')
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-</script> 
+</style> 

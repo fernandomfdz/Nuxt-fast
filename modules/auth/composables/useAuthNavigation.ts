@@ -17,7 +17,7 @@ export const useAuthNavigation = () => {
       },
       {
         label: 'Perfil',
-        href: config.profilePath || '/auth/profile',
+        href: config.profilePath || '/dashboard',
         external: false,
         requiresAuth: true
       }

@@ -2,19 +2,19 @@
   <div class="dropdown dropdown-end">
     <div tabindex="0" role="button" class="btn btn-ghost gap-1 normal-case">
       <div class="flex items-center gap-2">
-        <div :class="currentThemeColors" class="w-4 h-4 rounded-full"></div>
+        <div :class="currentThemeColors" class="w-4 h-4 rounded-full"/>
         <span class="hidden sm:inline">{{ currentThemeLabel }}</span>
       </div>
       <Icon name="heroicons:chevron-down" class="w-4 h-4" />
     </div>
-    <ul tabindex="0" class="dropdown-content bg-base-200 rounded-box z-[1] w-fit p-2 shadow-lg border border-base-300 h-96 overflow-y-scroll">
+    <ul tabindex="0" class="dropdown-content bg-base-200 rounded-box z-[1] w-fit p-2 shadow-lg border border-base-300 max-h-96 overflow-y-scroll">
       <li v-for="theme in availableThemes" :key="theme.value">
         <button 
           class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-base-300 transition-colors justify-start"
           :class="{ 'bg-primary text-primary-content': currentTheme === theme.value }"
           @click="setTheme(theme.value)"
         >
-          <div :class="theme.colors" class="w-4 h-4 rounded-full flex-shrink-0"></div>
+          <div :class="theme.colors" class="w-4 h-4 rounded-full flex-shrink-0"/>
           <span class="flex-1 text-left">{{ theme.label }}</span>
           <Icon v-if="currentTheme === theme.value" name="heroicons:check" class="w-4 h-4 flex-shrink-0" />
         </button>
@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { useColorMode } from '@vueuse/core'
+import { config } from '~/config'
 
 // Todos los temas disponibles de DaisyUI con sus colores representativos
-const availableThemes = [
+const allThemes = [
   { 
     value: 'light', 
     label: 'light', 
@@ -195,33 +195,33 @@ const availableThemes = [
   }
 ]
 
-// Usar VueUse para manejar el modo de color
-const colorMode = useColorMode({
-  attribute: 'data-theme',
-  modes: availableThemes.reduce((acc, theme) => {
-    acc[theme.value] = theme.value
-    return acc
-  }, {} as Record<string, string>)
+// Filtrar temas disponibles según configuración
+const availableThemes = computed(() => {
+  if (config.themes?.availableThemes && config.themes.availableThemes.length > 0) {
+    return allThemes.filter(theme => config.themes!.availableThemes!.includes(theme.value))
+  }
+  return allThemes
 })
 
 // Estado reactivo del tema actual
-const currentTheme = computed(() => colorMode.value)
+const currentTheme = ref<string>('light')
 
 // Etiqueta del tema actual
 const currentThemeLabel = computed(() => {
-  const theme = availableThemes.find(t => t.value === currentTheme.value)
+  const theme = allThemes.find(t => t.value === currentTheme.value)
   return theme?.label || 'Theme'
 })
 
 // Colores del tema actual
 const currentThemeColors = computed(() => {
-  const theme = availableThemes.find(t => t.value === currentTheme.value)
+  const theme = allThemes.find(t => t.value === currentTheme.value)
   return theme?.colors || 'bg-gradient-to-r from-gray-500 to-blue-500'
 })
 
 // Función para cambiar el tema
 const setTheme = (theme: string) => {
-  colorMode.value = theme
+  // Actualizar estado reactivo
+  currentTheme.value = theme
   
   // Aplicar el tema al documento
   if (import.meta.client) {
@@ -231,6 +231,7 @@ const setTheme = (theme: string) => {
       // Detectar preferencia del sistema
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
       html.setAttribute('data-theme', prefersDark ? 'dark' : 'light')
+      currentTheme.value = prefersDark ? 'dark' : 'light'
     } else {
       html.setAttribute('data-theme', theme)
     }
@@ -243,14 +244,16 @@ const setTheme = (theme: string) => {
 // Inicializar tema al montar el componente
 onMounted(() => {
   if (import.meta.client) {
-    const savedTheme = localStorage.getItem('theme') || 'system'
+    // Usar tema por defecto de la configuración si no hay tema guardado
+    const defaultTheme = config.themes?.defaultTheme || 'light'
+    const savedTheme = localStorage.getItem('theme') || defaultTheme
     setTheme(savedTheme)
     
-    // Escuchar cambios en la preferencia del sistema
+    // Escuchar cambios en la preferencia del sistema si se usa 'system'
     if (savedTheme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
       const handleChange = () => {
-        if (colorMode.value === 'system') {
+        if (localStorage.getItem('theme') === 'system') {
           setTheme('system')
         }
       }

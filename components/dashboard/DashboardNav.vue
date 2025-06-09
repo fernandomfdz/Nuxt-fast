@@ -35,9 +35,9 @@ const dynamicNavItems = computed(() => {
   if (enabledModules.value.includes('organizations') && config.modules?.organizations?.enabled) {
     items.push({
       name: 'Organizaciones',
-      href: '/settings/organizations',
+      href: config.modules?.organizations?.listUrl || '/organizations',
       icon: 'heroicons:building-office',
-      current: route.path.startsWith('/settings/organizations')
+      current: route.path.startsWith(config.modules?.organizations?.listUrl || '/organizations')
     })
   }
 
@@ -83,7 +83,9 @@ const navItems = computed(() => [
         </div>
 
         <!-- User Menu -->
-        <div class="flex items-center">
+        <div class="flex items-center space-x-4">
+          <!-- Theme Selector -->
+          <ThemeSelector v-if="config.themes?.showThemeSelector" />
           <ButtonAccount />
         </div>
       </div>

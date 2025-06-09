@@ -270,10 +270,24 @@ export const config = {
   },
   colors: {
     // REQUIRED — The DaisyUI theme to use (added to the main layout.js). Leave blank for default (light & dark mode). If you any other theme than light/dark, you need to add it in config.tailwind.js in daisyui.themes.
-    theme: "light",
+    theme: "cyberpunk",
     // REQUIRED — This color will be reflected on the whole app outside of the document (loading bar, Chrome tabs, etc..). By default it takes the primary color from your DaisyUI theme (make sure to update your the theme name after "data-theme=")
     // OR you can just do this to use a custom color: main: "#f37055". HEX only.
     main: "#f37055"
+  },
+
+  // === CONFIGURACIÓN DE TEMAS ===
+  themes: {
+    // Mostrar selector de temas en la interfaz
+    showThemeSelector: true,
+    // Tema por defecto al cargar la aplicación
+    defaultTheme: "light",
+    // Temas disponibles en el selector (dejar vacío para mostrar todos)
+    // Si se especifica, solo estos temas aparecerán en el selector
+    availableThemes: [
+      "light",
+      "dark",
+    ]
   },
 
   // === MÓDULOS DE NUXTFAST ===
@@ -286,7 +300,7 @@ export const config = {
       // URLs de autenticación - corregidas para coincidir con el módulo
       loginPath: "/auth/signin",
       registerPath: "/auth/signup",
-      profilePath: "/auth/profile", 
+      profilePath: "/dashboard", 
       callbackPath: "/auth/callback",
       // URLs de redirección (para compatibilidad)
       loginUrl: "/auth/signin",

@@ -46,7 +46,7 @@ const showLoading = computed(() => {
       <DashboardNav />
       
       <!-- Contenido Principal -->
-      <slot />
+      <NuxtPage />
     </div>
     
     <!-- Estado de error/no autenticado (fallback) -->

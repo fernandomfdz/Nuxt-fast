@@ -4,7 +4,7 @@
     <NuxtLoadingIndicator :color="config.colors.main" />
 
     <!-- Contenido de las páginas -->
-    <slot />
+    <NuxtPage />
   </div>
 </template>
 

@@ -1,96 +1,72 @@
 ---
-title: "Módulo de Organizaciones: Gestión Multi-Tenant con Better Auth"
-description: "Nuevo módulo de organizaciones en NuxtFast para gestionar equipos, miembros, roles y permisos basado en Better Auth Organization Plugin."
-publishedAt: "2025-01-27"
+title: "Módulo de Organizaciones para NuxtFast"
+description: "Sistema completo de gestión de organizaciones integrado con Better Auth y diseño modular"
+publishedAt: "2024-12-19"
 author:
   - slug: fer
     avatar: "/avatars/team.jpg"
 categories:
   - slug: "mejoras"
     title: "Mejoras"
-  - slug: "autenticacion"
-    title: "Autenticación"
 image:
-  src: "https://picsum.photos/800/400?random=9"
-  alt: "Módulo de Organizaciones NuxtFast"
+  src: "https://picsum.photos/800/400?random=5"
+  alt: "Módulo de organizaciones NuxtFast"
 ---
 
-# 🏢 Módulo de Organizaciones: Gestión Multi-Tenant
+# Módulo de Organizaciones para NuxtFast
 
-**Fecha**: 27 de Enero, 2025  
-**Versión**: 2.3.0  
-**Tipo**: Nueva Funcionalidad Mayor
+Hemos implementado un **módulo completo de organizaciones** para NuxtFast que permite a los usuarios crear, gestionar y colaborar en organizaciones de manera eficiente.
 
-## 🎯 ¿Qué es el Módulo de Organizaciones?
+## 🚀 Características Principales
 
-El **módulo de organizaciones** de NuxtFast permite crear aplicaciones **multi-tenant** donde los usuarios pueden:
+### Gestión de Organizaciones
+- **Crear organizaciones** con nombre, slug único y descripción
+- **Selección de iconos** personalizados para cada organización
+- **Organización activa** para contexto de trabajo
+- **Eliminación segura** con confirmación
 
-- ✅ **Crear organizaciones** (empresas, equipos, proyectos)
-- ✅ **Invitar miembros** con diferentes roles y permisos
-- ✅ **Gestionar equipos** dentro de organizaciones
-- ✅ **Controlar acceso** con sistema de roles granular
-- ✅ **Dashboard específico** por organización
-- ✅ **Configuración flexible** desde `config.ts`
+### Integración con Better Auth
+- **Plugin de organizaciones** de Better Auth integrado
+- **Configuración condicional** - solo se activa si el módulo está habilitado
+- **Autenticación automática** para todas las operaciones
+- **Gestión de sesiones** y permisos
 
-Basado en el [**Better Auth Organization Plugin**](https://www.better-auth.com/docs/plugins/organization), ofrece una solución completa y escalable.
+### Arquitectura Modular
+- **Módulo independiente** en `modules/organizations/`
+- **Auto-registro** en Nuxt siguiendo las mejores prácticas
+- **Composables reutilizables** para lógica de negocio
+- **Componentes modulares** con prefijo automático
 
-## 🚀 Instalación Rápida
+## 📁 Estructura del Módulo
 
-### **1. Comando CLI**
-```bash
-npx nuxtfast add organizations
+```
+modules/organizations/
+├── index.ts                    # Configuración del módulo Nuxt
+├── composables/
+│   ├── useOrganizations.ts     # Gestión de organizaciones
+│   ├── useOrganization.ts      # Organización individual
+│   └── useOrganizationMembers.ts # Gestión de miembros
+├── components/
+│   ├── OrganizationCard.vue    # Tarjeta de organización
+│   └── OrganizationForm.vue    # Formulario crear/editar
+├── pages/
+│   ├── index.vue              # Lista de organizaciones
+│   ├── create.vue             # Crear organización
+│   └── [id]/
+│       └── dashboard.vue      # Dashboard de organización
+└── server/
+    └── api/
+        └── organizations/     # Endpoints API
 ```
 
-### **2. Flujo Interactivo**
-```bash
-🏢 Configurando módulo de organizaciones de NuxtFast...
+## 🛠️ Configuración
 
-🔍 Verificando dependencias...
-✅ Dependencias verificadas
+### 1. Habilitar el Módulo
 
-🏢 ¿Qué características quieres habilitar para las organizaciones?
+En tu `config.ts`:
 
-   1. Equipos (Teams) - Equipos dentro de organizaciones para mejor gestión
-   2. Roles Avanzados - Sistema de roles y permisos personalizables
-
-💡 Puedes seleccionar múltiples características separándolas con comas (ej: 1,2)
-💡 Presiona Enter para usar configuración básica
-
-🔧 Tu selección (opcional): 1,2
-
-✅ Características seleccionadas:
-   - Equipos (Teams)
-   - Roles Avanzados
-
-⚙️  Configurando organizaciones...
-
-🔢 Límite de organizaciones por usuario (por defecto: 5): 10
-👥 Límite de miembros por organización (por defecto: 100): 200
-👑 Rol del creador (owner/admin, por defecto: owner): owner
-
-📦 Verificando dependencias...
-✅ Dependencias listas
-
-📝 Actualizando config.ts...
-✅ config.ts actualizado
-
-📁 Creando módulo de organizaciones...
-✅ Estructura del módulo creada
-
-🔧 Actualizando configuración de Better Auth...
-✅ Better Auth configurado con plugin de organizaciones
-
-🛡️ Creando middleware de organizaciones...
-✅ Middleware de organizaciones creado
-```
-
-## ⚙️ Configuración en config.ts
-
-### **Configuración Completa**
 ```typescript
 export const config = {
-  // ... otras configuraciones
-  
   modules: {
     auth: {
       enabled: true,
@@ -98,345 +74,164 @@ export const config = {
     },
     organizations: {
       enabled: true,
-      showInNavigation: true,
-      // URLs de organizaciones
-      listUrl: "/organizations",
-      createUrl: "/organizations/create",
-      dashboardUrl: "/organizations/dashboard",
-      // Configuraciones de organización
       allowUserToCreateOrganization: true,
-      organizationLimit: 10, // Máximo 10 organizaciones por usuario
-      membershipLimit: 200, // Máximo 200 miembros por organización
-      creatorRole: "owner", // Rol del creador: "owner" o "admin"
-      // Invitaciones
-      invitationExpiresIn: 172800, // 48 horas (2 días) en segundos
-      invitationLimit: 50, // Máximo 50 invitaciones por organización
-      cancelPendingInvitationsOnReInvite: true,
-      // Teams (equipos dentro de organizaciones)
-      teams: {
-        enabled: true,
-        maximumTeams: 10, // Máximo 10 equipos por organización
-        allowRemovingAllTeams: false // No permitir eliminar todos los equipos
-      },
-      // Roles y permisos
-      roles: {
-        owner: {
-          name: "Propietario",
-          permissions: ["*"] // Todos los permisos
-        },
-        admin: {
-          name: "Administrador", 
-          permissions: [
-            "organization:read",
-            "organization:update",
-            "member:invite",
-            "member:remove",
-            "member:update-role",
-            "team:create",
-            "team:update",
-            "team:delete"
-          ]
-        },
-        member: {
-          name: "Miembro",
-          permissions: [
-            "organization:read",
-            "team:read"
-          ]
-        },
-        viewer: {
-          name: "Visualizador",
-          permissions: [
-            "organization:read"
-          ]
-        }
-      }
+      organizationLimit: 5,
+      membershipLimit: 100,
+      creatorRole: 'owner',
+      invitationExpiresIn: 172800, // 48 horas
+      invitationLimit: 50,
+      cancelPendingInvitationsOnReInvite: true
     }
   }
 }
 ```
 
-### **Configuración Mínima**
-```typescript
-modules: {
-  organizations: {
-    enabled: true
-    // Todo lo demás usa valores por defecto
-  }
-}
+### 2. Variables de Entorno
+
+El módulo utiliza las mismas variables que Better Auth:
+
+```env
+MONGODB_URI=mongodb://localhost:27017/nuxtfast
+BETTER_AUTH_SECRET=tu-secret-key-aqui
+BETTER_AUTH_URL=http://localhost:3000
 ```
 
-## 🛠️ Composables Disponibles
+### 3. Migración de Base de Datos
 
-### **useOrganizations()**
-Gestión principal de organizaciones.
-
-```typescript
-const { 
-  organizations,           // Lista de organizaciones del usuario
-  activeOrganization,     // Organización actualmente activa
-  isLoading,              // Estado de carga
-  error,                  // Errores
-  isEnabled,              // Si el módulo está habilitado
-  fetchOrganizations,     // Obtener organizaciones
-  createOrganization,     // Crear nueva organización
-  setActiveOrganization,  // Establecer organización activa
-  checkSlugAvailability,  // Verificar si slug está disponible
-  leaveOrganization       // Salir de organización
-} = useOrganizations()
-```
-
-**Ejemplo de Uso:**
-```typescript
-// Obtener organizaciones del usuario
-await fetchOrganizations()
-
-// Crear nueva organización
-const newOrg = await createOrganization({
-  name: "Mi Empresa",
-  slug: "mi-empresa",
-  logo: "https://example.com/logo.png"
-})
-
-// Establecer como activa
-await setActiveOrganization(newOrg.id)
-```
-
-### **useOrganization()**
-Gestión de una organización específica.
-
-```typescript
-const { 
-  organization,           // Datos de la organización
-  members,               // Miembros de la organización
-  teams,                 // Equipos de la organización
-  userRole,              // Rol del usuario actual
-  permissions,           // Permisos del usuario actual
-  canInviteMembers,      // Si puede invitar miembros
-  canManageTeams,        // Si puede gestionar equipos
-  fetchOrganization,     // Obtener datos de organización
-  updateOrganization,    // Actualizar organización
-  deleteOrganization     // Eliminar organización
-} = useOrganization(organizationSlug)
-```
-
-## 🎨 Componentes Disponibles
-
-### **Componentes Principales**
-- `<OrganizationCard />` - Tarjeta de organización
-- `<OrganizationForm />` - Formulario crear/editar organización
-- `<OrganizationNav />` - Navegación del dashboard de organización
-- `<OrganizationStats />` - Estadísticas de la organización
-
-### **Gestión de Miembros**
-- `<OrganizationMemberCard />` - Tarjeta de miembro
-- `<OrganizationInviteForm />` - Formulario de invitación
-- `<OrganizationRoleSelector />` - Selector de roles
-
-### **Gestión de Equipos**
-- `<OrganizationTeamCard />` - Tarjeta de equipo
-- `<OrganizationTeamForm />` - Formulario crear/editar equipo
-
-## 🌐 Rutas Automáticas
-
-### **URLs Disponibles**
-| Ruta | Descripción | Requiere Auth |
-|------|-------------|---------------|
-| `/organizations` | Lista de organizaciones | ✅ |
-| `/organizations/create` | Crear organización | ✅ |
-| `/organizations/dashboard/:slug` | Dashboard de organización | ✅ |
-| `/organizations/dashboard/:slug/settings` | Configuración | ✅ |
-| `/organizations/dashboard/:slug/members` | Gestión de miembros | ✅ |
-| `/organizations/dashboard/:slug/teams` | Gestión de equipos | ✅ |
-| `/organizations/accept/:id` | Aceptar invitación | ✅ |
-
-### **API Routes**
-| Endpoint | Método | Descripción |
-|----------|---------|-------------|
-| `/api/organizations` | GET | Listar organizaciones |
-| `/api/organizations` | POST | Crear organización |
-| `/api/organizations/:id` | GET | Obtener organización |
-| `/api/organizations/:id` | PATCH | Actualizar organización |
-| `/api/organizations/:id` | DELETE | Eliminar organización |
-| `/api/organizations/:id/members` | GET | Listar miembros |
-| `/api/organizations/:id/invite` | POST | Invitar miembro |
-| `/api/organizations/:id/teams` | GET | Listar equipos |
-| `/api/organizations/:id/teams` | POST | Crear equipo |
-
-## 📊 Sistema de Roles y Permisos
-
-### **Roles Predefinidos**
-
-#### **👑 Owner (Propietario)**
-- ✅ **Todos los permisos** (`*`)
-- ✅ Transferir propiedad
-- ✅ Eliminar organización
-- ✅ Gestión completa
-
-#### **🛡️ Admin (Administrador)**
-- ✅ Leer organización (`organization:read`)
-- ✅ Actualizar organización (`organization:update`)
-- ✅ Invitar miembros (`member:invite`)
-- ✅ Remover miembros (`member:remove`)
-- ✅ Cambiar roles (`member:update-role`)
-- ✅ Gestionar equipos (`team:*`)
-
-#### **👤 Member (Miembro)**
-- ✅ Leer organización (`organization:read`)
-- ✅ Ver equipos (`team:read`)
-
-#### **👁️ Viewer (Visualizador)**
-- ✅ Solo lectura (`organization:read`)
-
-### **Permisos Disponibles**
-```typescript
-const permissions = [
-  // Organización
-  'organization:read',
-  'organization:update',
-  'organization:delete',
-  
-  // Miembros
-  'member:invite',
-  'member:remove',
-  'member:update-role',
-  
-  // Equipos
-  'team:create',
-  'team:read',
-  'team:update',
-  'team:delete'
-]
-```
-
-## 🔧 Migración de Base de Datos
-
-### **Después de la Instalación**
 ```bash
 npx @better-auth/cli migrate
 ```
 
-### **Esquema de Base de Datos**
-El plugin añade las siguientes tablas:
+## 💻 Uso de Composables
 
-#### **organization**
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | string | ID único |
-| name | string | Nombre |
-| slug | string | Slug único |
-| logo | string | URL del logo |
-| metadata | json | Datos adicionales |
-| createdAt | datetime | Fecha creación |
+### useOrganizations()
 
-#### **member**
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | string | ID único |
-| userId | string | ID del usuario |
-| organizationId | string | ID de organización |
-| role | string | Rol del miembro |
-| teamId | string | ID del equipo (opcional) |
-| createdAt | datetime | Fecha ingreso |
+```vue
+<script setup>
+const {
+  organizations,
+  activeOrganization,
+  isLoading,
+  createOrganization,
+  deleteOrganization,
+  setActiveOrganization
+} = useOrganizations()
 
-#### **invitation**
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | string | ID único |
-| email | string | Email invitado |
-| organizationId | string | ID de organización |
-| inviterId | string | ID del invitador |
-| role | string | Rol propuesto |
-| status | string | Estado invitación |
-| expiresAt | datetime | Fecha expiración |
-
-#### **team** (si está habilitado)
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| id | string | ID único |
-| name | string | Nombre del equipo |
-| organizationId | string | ID de organización |
-| createdAt | datetime | Fecha creación |
-
-## 💼 Casos de Uso
-
-### **1. SaaS Multi-Tenant**
-```typescript
-// Configuración para SaaS
-modules: {
-  organizations: {
-    enabled: true,
-    organizationLimit: 1, // 1 organización por usuario
-    membershipLimit: 500, // Hasta 500 miembros
-    teams: {
-      enabled: true,
-      maximumTeams: 20
-    }
-  }
+// Crear nueva organización
+const handleCreate = async (data) => {
+  await createOrganization({
+    name: data.name,
+    slug: data.slug,
+    description: data.description,
+    logo: data.logo
+  })
 }
-```
 
-### **2. Plataforma de Equipos**
-```typescript
-// Configuración para equipos múltiples
-modules: {
-  organizations: {
-    enabled: true,
-    organizationLimit: 10, // Múltiples organizaciones
-    membershipLimit: 50,   // Equipos más pequeños
-    creatorRole: "admin"   // Creador es admin, no owner
-  }
+// Establecer organización activa
+const handleSetActive = async (orgId) => {
+  await setActiveOrganization(orgId)
 }
+</script>
 ```
 
-### **3. Plataforma Educativa**
-```typescript
-// Configuración para educación
-modules: {
-  organizations: {
-    enabled: true,
-    organizationLimit: 5,
-    membershipLimit: 1000, // Clases grandes
-    roles: {
-      teacher: {
-        name: "Profesor",
-        permissions: ["*"]
-      },
-      student: {
-        name: "Estudiante", 
-        permissions: ["organization:read"]
-      }
-    }
-  }
+### useOrganization()
+
+```vue
+<script setup>
+const route = useRoute()
+const orgId = computed(() => route.params.id)
+
+const {
+  organization,
+  isLoading,
+  updateOrganization
+} = useOrganization(orgId)
+
+// Actualizar organización
+const handleUpdate = async (data) => {
+  await updateOrganization({
+    name: data.name,
+    description: data.description,
+    logo: data.logo
+  })
 }
+</script>
 ```
 
-## 🗑️ Desinstalación
+## 🎨 Componentes
 
-### **Deshabilitar Módulo**
-```bash
-npx nuxtfast remove organizations
+### OrganizationCard
+
+Tarjeta visual para mostrar organizaciones:
+
+```vue
+<template>
+  <OrganizationCard
+    :organization="org"
+    :is-active="isActive"
+    @set-active="handleSetActive"
+    @edit="handleEdit"
+    @delete="handleDelete"
+  />
+</template>
 ```
 
-### **Opciones de Eliminación**
-- ✅ **Deshabilitar**: Mantiene archivos y configuración
-- ❌ **Eliminar archivos**: Borra el módulo completo
-- ⚠️ **Datos**: Los datos en MongoDB se conservan por seguridad
+### OrganizationForm
 
-## 🔮 Próximas Funcionalidades
+Formulario completo para crear/editar:
 
-- **Facturación por Organización** - Integración con Stripe
-- **Límites por Plan** - Diferentes límites según suscripción
-- **Audit Logs** - Registro de actividad por organización
-- **Webhooks** - Notificaciones de eventos de organización
-- **API Keys** - Acceso programático por organización
+```vue
+<template>
+  <OrganizationForm
+    :organization="org"
+    :is-editing="true"
+    @submit="handleSubmit"
+    @cancel="handleCancel"
+  />
+</template>
+```
 
-## 📚 Referencias
+## 🔧 Características Técnicas
 
-- **Better Auth Organization Plugin**: https://www.better-auth.com/docs/plugins/organization
-- **NuxtFast Docs**: https://nuxtfast.com/docs/organizations
-- **Ejemplos**: https://github.com/nuxtfast/examples/organizations
+### Auto-registro de Módulo
+- **Composables automáticos**: Se registran automáticamente en Nuxt
+- **Componentes con prefijo**: `Organization*` disponibles globalmente
+- **Páginas dinámicas**: Rutas registradas automáticamente
+- **Configuración condicional**: Solo se activa si está habilitado
+
+### Integración Better Auth
+- **Plugin condicional**: Solo se incluye si el módulo está activo
+- **Cliente sincronizado**: Configuración automática del cliente
+- **Endpoints delegados**: API endpoints delegan a Better Auth
+- **Tipos TypeScript**: Interfaces completas para todas las entidades
+
+### Gestión de Estados
+- **Estados reactivos**: Usando `ref()` y `readonly()`
+- **Manejo de errores**: Estados específicos para cada operación
+- **Loading states**: Indicadores de carga granulares
+- **Validación**: Validación de formularios en tiempo real
+
+## 🎯 Próximas Funcionalidades
+
+- **Gestión de miembros**: Invitar, remover y gestionar roles
+- **Equipos**: Organizar miembros en equipos
+- **Permisos granulares**: Sistema de roles y permisos
+- **Invitaciones**: Sistema completo de invitaciones por email
+- **Dashboard avanzado**: Métricas y estadísticas de organización
+
+## 🔒 Seguridad
+
+- **Autenticación requerida**: Todas las operaciones requieren autenticación
+- **Validación de permisos**: Solo propietarios pueden eliminar organizaciones
+- **Sanitización de datos**: Validación de entrada en formularios
+- **Slugs únicos**: Prevención de duplicados en identificadores
+
+## 📚 Documentación Adicional
+
+- [Better Auth Organizations Plugin](https://www.better-auth.com/docs/plugins/organization)
+- [Nuxt 3 Modules](https://nuxt.com/docs/guide/going-further/modules)
+- [NuxtFast Architecture](https://github.com/tu-repo/nuxtfast)
 
 ---
 
-*¿Necesitas ayuda implementando organizaciones? [Contacta al soporte](mailto:support@nuxtfast.com)* 
+El módulo de organizaciones está **listo para producción** y proporciona una base sólida para aplicaciones colaborativas. Su diseño modular permite fácil extensión y personalización según las necesidades específicas de tu proyecto. 

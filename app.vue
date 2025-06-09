@@ -19,6 +19,23 @@ useHead({
     lang: 'en'
   }
 })
+
+// Aplicar tema por defecto desde configuración
+onMounted(() => {
+    // Obtener tema por defecto de la configuración
+    const defaultTheme = config.themes?.defaultTheme || config.colors?.theme || null
+
+    console.log('defaultTheme', defaultTheme)
+    // Verificar si ya hay un tema guardado por el usuario
+    const savedTheme = localStorage.getItem('theme')
+    console.log('savedTheme', savedTheme)
+
+    if (defaultTheme) { 
+      const html = document.documentElement
+      html.setAttribute('data-theme', defaultTheme)
+      localStorage.setItem('theme', defaultTheme)
+    }
+})
 </script>
 
 <style>

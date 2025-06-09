@@ -77,7 +77,7 @@ onMounted(async () => {
     if (session) {
       // Redirigir al perfil después de autenticación exitosa
       setTimeout(() => {
-        navigateTo('/auth/profile')
+        navigateTo('/dashboard')
       }, 1000)
     } else {
       error.value = 'No se pudo completar la autenticación'

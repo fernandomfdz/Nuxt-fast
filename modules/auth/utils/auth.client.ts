@@ -1,4 +1,5 @@
 import { createAuthClient } from "better-auth/client"
+import { organizationClient } from "better-auth/client/plugins"
 import { config } from '~/config'
 
 const authConfig = config.modules?.auth
@@ -6,6 +7,10 @@ const authConfig = config.modules?.auth
 if (!authConfig?.enabled) {
   throw new Error('Módulo de autenticación no está habilitado en config.ts')
 }
+
+// Verificar si el módulo organizations está habilitado
+const organizationsConfig = config.modules?.organizations
+const isOrganizationsEnabled = organizationsConfig?.enabled
 
 // Función helper para obtener la baseURL correcta
 const getBaseURL = () => {
@@ -24,8 +29,14 @@ const getBaseURL = () => {
 }
 
 export const authClient = createAuthClient({
-  baseURL: getBaseURL()
+  baseURL: getBaseURL(),
+  plugins: [
+    organizationClient()
+  ]
 })
+
+// Exportar como default para uso directo
+export default authClient
 
 // Exportaciones específicas para compatibilidad
 export const { 

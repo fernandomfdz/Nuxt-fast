@@ -188,7 +188,7 @@ export function processModulesConfig() {
         showInNavigation: true,
         loginPath: '/auth/signin',
         registerPath: '/auth/signup',
-        profilePath: '/auth/profile',
+        profilePath: '/dashboard',
         callbackPath: '/auth/callback'
       }
     } else {
@@ -197,7 +197,7 @@ export function processModulesConfig() {
         showInNavigation: true,
         loginPath: '/auth/signin',
         registerPath: '/auth/signup',
-        profilePath: '/auth/profile',
+        profilePath: '/dashboard',
         callbackPath: '/auth/callback',
         ...modulesConfig.auth
       }

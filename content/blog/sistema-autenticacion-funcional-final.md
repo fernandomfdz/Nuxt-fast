@@ -65,7 +65,7 @@ modules: {
     showInNavigation: false,
     loginPath: "/auth/signin",
     registerPath: "/auth/signup",
-    profilePath: "/auth/profile", 
+    profilePath: "/dashboard", 
     callbackPath: "/auth/callback",
     loginUrl: "/auth/signin",
     callbackUrl: "/dashboard",

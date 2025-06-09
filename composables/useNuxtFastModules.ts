@@ -94,7 +94,7 @@ export const useNuxtFastModules = () => {
       showInNavigation: true, 
       loginPath: '/auth/signin',
       registerPath: '/auth/signup',
-      profilePath: '/auth/profile',
+      profilePath: '/dashboard',
       callbackPath: '/auth/callback'
     }
     
@@ -104,7 +104,7 @@ export const useNuxtFastModules = () => {
         showInNavigation: true,
         loginPath: '/auth/signin',
         registerPath: '/auth/signup',
-        profilePath: '/auth/profile',
+        profilePath: '/dashboard',
         callbackPath: '/auth/callback'
       }
     }
@@ -114,7 +114,7 @@ export const useNuxtFastModules = () => {
       showInNavigation: true,
       loginPath: '/auth/signin',
       registerPath: '/auth/signup',
-      profilePath: '/auth/profile',
+      profilePath: '/dashboard',
       callbackPath: '/auth/callback',
       ...modulesConfig.auth
     }
@@ -306,11 +306,11 @@ export const useNuxtFastModules = () => {
     if (!organizations.value.enabled || !organizations.value.showInNavigation) return []
     
     return [
-      {
+/*       {
         href: organizations.value.listUrl,
         label: 'Organizaciones',
         icon: 'heroicons:building-office'
-      }
+      } */
     ]
   }
   

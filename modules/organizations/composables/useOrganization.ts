@@ -1,35 +1,52 @@
-import { ref, computed } from 'vue'
-import { config } from '~/config'
+import { ref, readonly } from 'vue'
+import { authClient } from '@/modules/auth/utils/auth.client'
+import type { Organization } from 'better-auth/plugins/organization/schema'
 
-export interface Organization {
-  id: string
-  name: string
-  slug: string
-  logo?: string
-  metadata?: Record<string, unknown>
-  createdAt: string
-  activeOrganizationId?: string
-  memberCount?: number
-  teamCount?: number
-}
-
-export const useOrganization = (organizationId?: string) => {
+export const useOrganization = (organizationId: string) => {
+  // Estado
   const organization = ref<Organization | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
-
-  // Configuración del módulo
-  const orgConfig = computed(() => config.modules?.organizations)
-  const isEnabled = computed(() => orgConfig.value?.enabled)
-
-  // Obtener organización por ID
-  const fetchOrganization = async (id?: string) => {
-    if (!isEnabled.value) {
-      throw new Error('El módulo de organizaciones no está habilitado')
+  
+  // Cargar organización
+  const loadOrganization = async () => {
+    if (!organizationId) {
+      error.value = 'ID de organización requerido'
+      return
     }
 
-    const targetId = id || organizationId
-    if (!targetId) {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const response = await authClient.organization.getFullOrganization({
+          query: { organizationId: organizationId }
+      })
+      
+      if (response.error) {
+        throw new Error(response.error.message)
+      }
+      
+      organization.value = response.data
+      
+      return organization.value
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al cargar organización'
+      error.value = errorMessage
+      organization.value = null
+      throw err
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Actualizar organización usando Better Auth
+  const updateOrganization = async (data: {
+    name?: string
+    description?: string
+    logo?: string
+  }) => {
+    if (!organizationId) {
       throw new Error('ID de organización requerido')
     }
 
@@ -37,97 +54,75 @@ export const useOrganization = (organizationId?: string) => {
     error.value = null
 
     try {
-      const response = await $fetch<{ organization: Organization }>(`/api/organizations/${targetId}`)
-      organization.value = response.organization
-      return response.organization
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Error al obtener organización'
-      throw err
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  // Obtener organización por slug
-  const fetchOrganizationBySlug = async (slug: string) => {
-    if (!isEnabled.value) {
-      throw new Error('El módulo de organizaciones no está habilitado')
-    }
-
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const response = await $fetch<{ organization: Organization }>(`/api/organizations/slug/${slug}`)
-      organization.value = response.organization
-      return response.organization
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Error al obtener organización'
-      throw err
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  // Actualizar organización
-  const updateOrganization = async (id: string, input: Partial<Organization>) => {
-    if (!isEnabled.value) {
-      throw new Error('El módulo de organizaciones no está habilitado')
-    }
-
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const response = await $fetch<{ organization: Organization }>(`/api/organizations/${id}`, {
-        method: 'PUT',
-        body: input
+      const response = await authClient.organization.update({
+        organizationId: organizationId,
+        data: {
+          name: data.name,
+          logo: data.logo,
+          metadata: {
+            description: data.description
+          }
+        }
       })
       
-      organization.value = response.organization
-      return response.organization
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Error al actualizar organización'
-      throw err
+      if (response.error) {
+        throw new Error(response.error.message)
+      }
+      
+      organization.value = response.data
+      
+      return organization.value
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al actualizar organización'
+      error.value = errorMessage
+      throw new Error(errorMessage)
     } finally {
       isLoading.value = false
     }
   }
 
-  // Eliminar organización
-  const deleteOrganization = async (id: string) => {
-    if (!isEnabled.value) {
-      throw new Error('El módulo de organizaciones no está habilitado')
+  // Eliminar organización usando Better Auth
+  const deleteOrganization = async () => {
+    if (!organizationId) {
+      throw new Error('ID de organización requerido')
     }
 
     isLoading.value = true
     error.value = null
 
     try {
-      await $fetch(`/api/organizations/${id}`, {
-        method: 'DELETE'
+      const response = await authClient.organization.delete({
+        organizationId: organizationId
       })
+      
+      if (response.error) {
+        throw new Error(response.error.message)
+      }
       
       organization.value = null
       return true
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Error al eliminar organización'
-      throw err
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al eliminar organización'
+      error.value = errorMessage
+      throw new Error(errorMessage)
     } finally {
       isLoading.value = false
     }
   }
 
+  // Cargar al montar si hay ID
+  if (organizationId && import.meta.client) {
+    loadOrganization()
+  }
+  
   return {
-    // Estado
+    // Estado reactivo
     organization: readonly(organization),
     isLoading: readonly(isLoading),
     error: readonly(error),
-    isEnabled,
     
-    // Métodos
-    fetchOrganization,
-    fetchOrganizationBySlug,
+    // Acciones
+    loadOrganization,
     updateOrganization,
     deleteOrganization
   }

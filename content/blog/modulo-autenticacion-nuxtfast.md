@@ -116,7 +116,7 @@ Si tienes email/contraseña + social:
 ```
 /auth/signin     - Página de inicio de sesión
 /auth/signup     - Página de registro
-/auth/profile    - Perfil del usuario
+/dashboard    - Perfil del usuario
 /auth/callback   - Callback para OAuth
 ```
 

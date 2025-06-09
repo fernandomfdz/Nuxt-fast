@@ -3,10 +3,6 @@
 		<Header />
 		<main>
 			<Hero />
-			
-			<!-- Sección de Organizaciones (solo para usuarios autenticados) -->
-			<OrganizationsSection v-if="showOrganizationsSection" />
-			
 			<ProblemSection />
 			<FeaturesSection />
 			<PricingSection />

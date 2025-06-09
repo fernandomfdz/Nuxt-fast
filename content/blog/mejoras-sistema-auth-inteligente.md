@@ -112,7 +112,7 @@ modules: {
       
       <!-- Dropdown con opciones -->
       <div v-if="isDropdownOpen">
-        <NuxtLink to="/auth/profile">Mi Perfil</NuxtLink>
+        <NuxtLink to="/dashboard">Mi Perfil</NuxtLink>
         <NuxtLink to="/dashboard">Dashboard</NuxtLink>
         <button @click="handleSignOut">Cerrar Sesión</button>
       </div>

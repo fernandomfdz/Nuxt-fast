@@ -185,7 +185,7 @@ const hasGoogle = socialProviders.includes('google')
 | `/auth/signin` | Página de login | ✅ (si configurado) |
 | `/auth/signup` | Página de registro | ✅ (si configurado) |
 | `/auth/callback` | Callback OAuth | ✅ (si configurado) |
-| `/auth/profile` | Perfil de usuario | ❌ |
+| `/dashboard` | Perfil de usuario | ❌ |
 
 ## 🎨 UI Components
 

@@ -71,7 +71,7 @@ auth: {
   enabled: true,
   loginPath: "/auth/signin",      // Para el módulo
   registerPath: "/auth/signup",
-  profilePath: "/auth/profile", 
+  profilePath: "/dashboard", 
   callbackPath: "/auth/callback",
   loginUrl: "/auth/signin",       // Para compatibilidad
   callbackUrl: "/dashboard"

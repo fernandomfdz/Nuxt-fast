@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth"
 import { mongodbAdapter } from "better-auth/adapters/mongodb"
+import { organization } from "better-auth/plugins"
 import { MongoClient } from "mongodb"
 import { config } from '~/config'
 
@@ -10,6 +11,10 @@ const isAuthEnabled = authConfig?.enabled
 if (!isAuthEnabled) {
   throw new Error('El módulo de autenticación no está habilitado en config.ts')
 }
+
+// Verificar si el módulo organizations está habilitado
+const organizationsConfig = config.modules?.organizations
+const isOrganizationsEnabled = organizationsConfig?.enabled
 
 // Obtener variables de entorno del runtime config
 const getRuntimeEnvVars = () => {
@@ -69,6 +74,27 @@ if (hasGoogleConfig && hasGoogleCredentials) {
   }
 }
 
+// Construir plugins dinámicamente
+const plugins = []
+
+// Solo agregar el plugin de organizaciones si está habilitado
+if (isOrganizationsEnabled) {
+  plugins.push(
+    organization({
+      allowUserToCreateOrganization: organizationsConfig.allowUserToCreateOrganization ?? true,
+      organizationLimit: organizationsConfig.organizationLimit || 5,
+      membershipLimit: organizationsConfig.membershipLimit || 100,
+      creatorRole: organizationsConfig.creatorRole || "owner",
+      invitationExpiresIn: organizationsConfig.invitationExpiresIn || 172800, // 48 horas
+      invitationLimit: organizationsConfig.invitationLimit || 50,
+      cancelPendingInvitationsOnReInvite: organizationsConfig.cancelPendingInvitationsOnReInvite ?? true,
+    })
+  )
+  console.log('✅ Plugin de organizaciones habilitado')
+} else {
+  console.log('ℹ️  Plugin de organizaciones deshabilitado')
+}
+
 export const auth = betterAuth({
   database: mongodbAdapter(client.db()),
   emailAndPassword: {
@@ -84,6 +110,17 @@ export const auth = betterAuth({
       maxAge: 5 * 60, // Cache por 5 minutos
     },
   },
+  plugins: [
+    organization({
+      allowUserToCreateOrganization: organizationsConfig.allowUserToCreateOrganization ?? true,
+      organizationLimit: organizationsConfig.organizationLimit || 5,
+      membershipLimit: organizationsConfig.membershipLimit || 100,
+      creatorRole: organizationsConfig.creatorRole || "owner",
+      invitationExpiresIn: organizationsConfig.invitationExpiresIn || 172800, // 48 horas
+      invitationLimit: organizationsConfig.invitationLimit || 50,
+      cancelPendingInvitationsOnReInvite: organizationsConfig.cancelPendingInvitationsOnReInvite ?? true,
+    })
+  ]
 })
 
 // NOTA: Los plugins se configurarán en una actualización futura

@@ -1,10 +1,10 @@
-<!-- OrganizationCreatePage -->
+<!-- OrganizationsCreatePage -->
 <template>
   <div class="p-8 pb-24">
     <section class="max-w-4xl mx-auto space-y-8">
       <!-- Header -->
       <div class="flex items-center space-x-4 mb-8">
-        <NuxtLink :to="orgConfig?.listUrl || '/settings/organizations'" class="btn btn-ghost">
+        <NuxtLink :to="config.modules.organizations.listUrl || '/organizations'" class="btn btn-ghost">
           <Icon name="heroicons:arrow-left" class="w-4 h-4 mr-2" />
           Volver a Organizaciones
         </NuxtLink>
@@ -30,7 +30,6 @@
                 placeholder="Mi Empresa"
                 class="input input-bordered"
                 :class="{ 'input-error': errors.name }"
-                @input="generateSlug"
               >
               <label v-if="errors.name" class="label">
                 <span class="label-text-alt text-error">{{ errors.name }}</span>
@@ -114,9 +113,11 @@
                       id: 'preview',
                       name: form.name,
                       slug: form.slug || 'mi-organizacion',
-                      logo: form.logo,
                       createdAt: new Date().toISOString(),
-                      metadata: form.description ? { description: form.description } : undefined
+                      metadata: { 
+                        description: form.description || undefined, 
+                        logo: form.logo || 'heroicons:building-office'
+                      }
                     }"
                     :is-active="false"
                   />
@@ -193,7 +194,7 @@ const canSubmit = computed(() => {
 
 // Generar slug automáticamente desde el nombre
 const generateSlug = () => {
-  if (!form.slug || form.slug === slugify(form.name)) {
+  if (!form.slug || form.slug !== slugify(form.name)) {
     form.slug = slugify(form.name)
     slugAvailable.value = null
   }
@@ -276,6 +277,10 @@ const validateForm = () => {
   return isValid
 }
 
+watch(() => form.name, () => {
+  generateSlug()
+})
+
 // Manejar envío del formulario
 const handleSubmit = async () => {
   if (!validateForm()) {
@@ -289,9 +294,7 @@ const handleSubmit = async () => {
       name: form.name.trim(),
       slug: form.slug.trim(),
       ...(form.logo && { logo: form.logo }),
-      ...(form.description && { 
-        metadata: { description: form.description.trim() } 
-      })
+      ...(form.description && { description: form.description.trim() })
     }
 
     const organization = await createOrganization(organizationData)

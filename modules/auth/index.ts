@@ -29,7 +29,7 @@ export default defineNuxtModule<AuthModuleOptions>({
     showInNavigation: true,
     loginPath: '/auth/signin',
     registerPath: '/auth/signup', 
-    profilePath: '/auth/profile',
+    profilePath: '/dashboard',
     callbackPath: '/auth/callback'
   },
   async setup(options, nuxt) {

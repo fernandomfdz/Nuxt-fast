@@ -76,7 +76,7 @@ const allNavigationLinks = computed(() => {
       <!-- CTA en pantallas grandes -->
       <div class="hidden lg:flex lg:justify-end lg:flex-1 gap-2">
         <AuthButton v-if="enabledModules.includes('auth')" />
-        <ThemeSelector/>
+        <ThemeSelector v-if="config.themes?.showThemeSelector"/>
       </div>
     </nav>
 

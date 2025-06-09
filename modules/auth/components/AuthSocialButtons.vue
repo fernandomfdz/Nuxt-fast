@@ -4,7 +4,7 @@
       v-for="provider in socialProviders"
       :key="provider.key"
       :disabled="isLoading"
-      class="btn btn-outline w-full flex items-center justify-center gap-3"
+      class="btn bg-white text-black w-full flex items-center justify-center gap-3"
       :class="{ 'loading': isLoading }"
       @click="handleSocialSignIn(provider.key)"
     >
