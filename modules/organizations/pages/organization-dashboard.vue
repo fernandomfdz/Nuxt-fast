@@ -92,7 +92,7 @@
       </div>
 
       <!-- Tabs de navegación -->
-             <div class="tabs tabs-boxed bg-base-200">
+      <div class="tabs tabs-boxed bg-base-200">
         <button 
           v-for="tab in tabs" 
           :key="tab.id"
@@ -103,7 +103,6 @@
           {{ tab.label }}
         </button>
       </div>
-
 
       <!-- Contenido de Miembros -->
       <div v-if="activeTab === 'members'" class="space-y-6">
@@ -154,9 +153,9 @@
                   <div>
                     <p class="font-medium">{{ member.user?.name || 'Usuario sin nombre' }}</p>
                     <p class="text-sm text-base-content/70">{{ member.user?.email }}</p>
-                                         <p class="text-xs text-base-content/50">
-                       Miembro desde {{ formatDate(typeof member.createdAt === 'string' ? member.createdAt : member.createdAt.toISOString()) }}
-                     </p>
+                    <p class="text-xs text-base-content/50">
+                      Miembro desde {{ formatDate(typeof member.createdAt === 'string' ? member.createdAt : member.createdAt.toISOString()) }}
+                    </p>
                   </div>
                 </div>
                 
@@ -176,7 +175,11 @@
                         </button>
                       </li>
                       <li>
-                        <button class="text-error" @click="handleRemoveMember(member)">
+                        <button 
+                          class="text-error" 
+                          :disabled="isRemoving"
+                          @click="handleRemoveMember(member)"
+                        >
                           <Icon name="heroicons:trash" class="w-4 h-4" />
                           Remover
                         </button>
@@ -188,140 +191,164 @@
             </div>
           </div>
         </div>
-             </div>
+      </div>
 
-       <!-- Contenido de Invitaciones -->
-       <div v-if="activeTab === 'invitations'" class="space-y-6">
-         <!-- Header de invitaciones -->
-         <div class="flex justify-between items-center">
-           <h2 class="text-2xl font-bold">Gestión de Invitaciones</h2>
-           <button 
-             class="btn btn-primary"
-             :disabled="isInviting"
-             @click="showInviteModal = true"
-           >
-             <Icon name="heroicons:user-plus" class="w-4 h-4 mr-2" />
-             Nueva Invitación
-           </button>
-         </div>
+      <!-- Contenido de Invitaciones -->
+      <div v-if="activeTab === 'invitations'" class="space-y-6">
+        <!-- Header de invitaciones -->
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-bold">Gestión de Invitaciones</h2>
+          <div class="flex gap-2">
+            <button 
+              class="btn btn-secondary btn-sm"
+              :disabled="isLoadingInvitations"
+              @click="loadInvitations"
+            >
+              <Icon name="heroicons:arrow-path" class="w-4 h-4 mr-2" />
+              Actualizar
+            </button>
+            <button 
+              class="btn btn-primary"
+              :disabled="isInviting"
+              @click="showInviteModal = true"
+            >
+              <Icon name="heroicons:user-plus" class="w-4 h-4 mr-2" />
+              Nueva Invitación
+            </button>
+          </div>
+        </div>
 
-         <!-- Lista de invitaciones -->
-         <div class="card bg-base-200 shadow-lg">
-           <div class="card-body">
-             <div v-if="isLoading" class="flex justify-center py-8">
-               <div class="loading loading-spinner loading-md"/>
-             </div>
-             
-             <div v-else-if="!organization?.invitations || organization.invitations.length === 0" class="text-center py-16">
-               <Icon name="heroicons:envelope" class="w-16 h-16 mx-auto text-base-content/30 mb-4" />
-               <h3 class="text-lg font-semibold mb-2">No hay invitaciones</h3>
-               <p class="text-base-content/70 mb-4">
-                 Invita a nuevos miembros para que se unan a tu organización
-               </p>
-               <button 
-                 class="btn btn-primary"
-                 @click="showInviteModal = true"
-               >
-                 Enviar Primera Invitación
-               </button>
-             </div>
-             
-             <div v-else class="space-y-4">
-               <div 
-                 v-for="invitation in organization.invitations" 
-                 :key="invitation.id"
-                 class="flex items-center justify-between p-4 bg-base-100 rounded-lg"
-               >
-                 <div class="flex items-center space-x-4">
-                   <div class="w-10 h-10 bg-secondary text-secondary-content rounded-full flex items-center justify-center font-medium">
-                     <Icon name="heroicons:envelope" class="w-5 h-5" />
-                   </div>
-                   <div>
-                     <p class="font-medium">{{ invitation.email }}</p>
-                     <p class="text-sm text-base-content/70">
-                       Rol: {{ invitation.role }}
-                     </p>
-                     <p class="text-xs text-base-content/50">
-                       Expira: {{ formatDate(typeof invitation.expiresAt === 'string' ? invitation.expiresAt : invitation.expiresAt.toISOString()) }}
-                     </p>
-                   </div>
-                 </div>
-                 
-                 <div class="flex items-center space-x-3">
-                   <!-- Badge de estado -->
-                   <div :class="getInvitationStatusClass(invitation.status)">
-                     {{ getInvitationStatusText(invitation.status) }}
-                   </div>
-                   
-                   <!-- Menú de opciones -->
-                   <div class="dropdown dropdown-end">
-                     <button tabindex="0" class="btn btn-ghost btn-sm">
-                       <Icon name="heroicons:ellipsis-vertical" class="w-4 h-4" />
-                     </button>
-                     <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                       <li v-if="invitation.status === 'pending'">
-                         <button @click="resendInvitation(invitation)">
-                           <Icon name="heroicons:arrow-path" class="w-4 h-4" />
-                           Reenviar
-                         </button>
-                       </li>
-                       <li v-if="invitation.status === 'pending'">
-                         <button class="text-error" @click="cancelInvitation(invitation)">
-                           <Icon name="heroicons:x-mark" class="w-4 h-4" />
-                           Cancelar
-                         </button>
-                       </li>
-                       <li v-if="invitation.status !== 'pending'">
-                         <button class="text-error" @click="deleteInvitation(invitation)">
-                           <Icon name="heroicons:trash" class="w-4 h-4" />
-                           Eliminar
-                         </button>
-                       </li>
-                     </ul>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
+        <!-- Lista de invitaciones -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <div v-if="isLoadingInvitations" class="flex justify-center py-8">
+              <div class="loading loading-spinner loading-md"/>
+            </div>
+            
+            <div v-else-if="invitations.length === 0" class="text-center py-16">
+              <Icon name="heroicons:envelope" class="w-16 h-16 mx-auto text-base-content/30 mb-4" />
+              <h3 class="text-lg font-semibold mb-2">No hay invitaciones</h3>
+              <p class="text-base-content/70 mb-4">
+                Invita a nuevos miembros para que se unan a tu organización
+              </p>
+              <button 
+                class="btn btn-primary"
+                @click="showInviteModal = true"
+              >
+                Enviar Primera Invitación
+              </button>
+            </div>
+            
+            <div v-else class="space-y-4">
+              <div 
+                v-for="invitation in invitations" 
+                :key="invitation.id"
+                class="flex items-center justify-between p-4 bg-base-100 rounded-lg"
+              >
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-secondary text-secondary-content rounded-full flex items-center justify-center font-medium">
+                    <Icon name="heroicons:envelope" class="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p class="font-medium">{{ invitation.email }}</p>
+                    <p class="text-sm text-base-content/70">
+                      Rol: {{ invitation.role }}
+                    </p>
+                    <p class="text-xs text-base-content/50">
+                      Enviada: {{ formatDate(typeof invitation.createdAt === 'string' ? invitation.createdAt : invitation.createdAt.toISOString()) }}
+                    </p>
+                    <p class="text-xs text-base-content/50">
+                      Expira: {{ formatDate(typeof invitation.expiresAt === 'string' ? invitation.expiresAt : invitation.expiresAt.toISOString()) }}
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                  <!-- Badge de estado -->
+                  <div :class="getInvitationStatusClass(invitation.status)">
+                    {{ getInvitationStatusText(invitation.status) }}
+                  </div>
+                  
+                  <!-- Menú de opciones -->
+                  <div class="dropdown dropdown-end">
+                    <button tabindex="0" class="btn btn-ghost btn-sm">
+                      <Icon name="heroicons:ellipsis-vertical" class="w-4 h-4" />
+                    </button>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <li v-if="invitation.status === 'pending'">
+                        <button 
+                          :disabled="isOperatingInvitation"
+                          @click="resendInvitation(invitation)"
+                        >
+                          <Icon name="heroicons:arrow-path" class="w-4 h-4" />
+                          Reenviar
+                        </button>
+                      </li>
+                      <li v-if="invitation.status === 'pending'">
+                        <button 
+                          class="text-error" 
+                          :disabled="isOperatingInvitation"
+                          @click="cancelInvitation(invitation)"
+                        >
+                          <Icon name="heroicons:x-mark" class="w-4 h-4" />
+                          Cancelar
+                        </button>
+                      </li>
+                      <li v-if="invitation.status !== 'pending'">
+                        <button 
+                          class="text-error" 
+                          :disabled="isOperatingInvitation"
+                          @click="deleteInvitation(invitation)"
+                        >
+                          <Icon name="heroicons:trash" class="w-4 h-4" />
+                          Eliminar
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-         <!-- Estadísticas de invitaciones -->
-         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-           <div class="stat bg-base-200 rounded-lg">
-             <div class="stat-figure text-warning">
-               <Icon name="heroicons:clock" class="w-6 h-6" />
-             </div>
-             <div class="stat-title text-xs">Pendientes</div>
-             <div class="stat-value text-sm">{{ getInvitationsByStatus('pending').length }}</div>
-           </div>
-           
-           <div class="stat bg-base-200 rounded-lg">
-             <div class="stat-figure text-success">
-               <Icon name="heroicons:check-circle" class="w-6 h-6" />
-             </div>
-             <div class="stat-title text-xs">Aceptadas</div>
-             <div class="stat-value text-sm">{{ getInvitationsByStatus('accepted').length }}</div>
-           </div>
-           
-           <div class="stat bg-base-200 rounded-lg">
-             <div class="stat-figure text-error">
-               <Icon name="heroicons:x-circle" class="w-6 h-6" />
-             </div>
-             <div class="stat-title text-xs">Rechazadas</div>
-             <div class="stat-value text-sm">{{ getInvitationsByStatus('declined').length }}</div>
-           </div>
-           
-           <div class="stat bg-base-200 rounded-lg">
-             <div class="stat-figure text-base-content/50">
-               <Icon name="heroicons:calendar-x" class="w-6 h-6" />
-             </div>
-             <div class="stat-title text-xs">Expiradas</div>
-             <div class="stat-value text-sm">{{ getInvitationsByStatus('expired').length }}</div>
-           </div>
-         </div>
-       </div>
+        <!-- Estadísticas de invitaciones -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="stat bg-base-200 rounded-lg">
+            <div class="stat-figure text-warning">
+              <Icon name="heroicons:clock" class="w-6 h-6" />
+            </div>
+            <div class="stat-title text-xs">Pendientes</div>
+            <div class="stat-value text-sm">{{ getInvitationsByStatus('pending').length }}</div>
+          </div>
+          
+          <div class="stat bg-base-200 rounded-lg">
+            <div class="stat-figure text-success">
+              <Icon name="heroicons:check-circle" class="w-6 h-6" />
+            </div>
+            <div class="stat-title text-xs">Aceptadas</div>
+            <div class="stat-value text-sm">{{ getInvitationsByStatus('accepted').length }}</div>
+          </div>
+          
+          <div class="stat bg-base-200 rounded-lg">
+            <div class="stat-figure text-error">
+              <Icon name="heroicons:x-circle" class="w-6 h-6" />
+            </div>
+            <div class="stat-title text-xs">Rechazadas</div>
+            <div class="stat-value text-sm">{{ getInvitationsByStatus('declined').length }}</div>
+          </div>
+          
+          <div class="stat bg-base-200 rounded-lg">
+            <div class="stat-figure text-base-content/50">
+              <Icon name="heroicons:calendar-x" class="w-6 h-6" />
+            </div>
+            <div class="stat-title text-xs">Expiradas</div>
+            <div class="stat-value text-sm">{{ getInvitationsByStatus('expired').length }}</div>
+          </div>
+        </div>
+      </div>
 
-       <!-- Contenido de Equipos -->
+      <!-- Contenido de Equipos -->
       <div v-if="activeTab === 'teams'" class="space-y-6">
         <!-- Header de equipos -->
         <div class="flex justify-between items-center">
@@ -393,7 +420,11 @@
                       </button>
                     </li>
                     <li>
-                      <button class="text-error" @click="deleteTeam(team.id)">
+                      <button 
+                        class="text-error" 
+                        :disabled="isLoadingTeams"
+                        @click="deleteTeam(team.id)"
+                      >
                         <Icon name="heroicons:trash" class="w-4 h-4" />
                         Eliminar
                       </button>
@@ -489,6 +520,57 @@
       <div class="modal-backdrop" @click="closeInviteModal"/>
     </div>
 
+    <!-- Modal para editar miembro -->
+    <div v-if="showEditMemberModal" class="modal modal-open">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Editar Miembro</h3>
+        
+        <form class="space-y-4" @submit.prevent="handleUpdateMemberRole">
+          <div>
+            <label class="label">
+              <span class="label-text">Usuario</span>
+            </label>
+            <div class="flex items-center space-x-3 p-3 bg-base-200 rounded-lg">
+              <div class="w-8 h-8 bg-primary text-primary-content rounded-full flex items-center justify-center font-medium text-sm">
+                {{ editingMember?.user?.name?.charAt(0).toUpperCase() || '?' }}
+              </div>
+              <div>
+                <p class="font-medium">{{ editingMember?.user?.name || 'Usuario sin nombre' }}</p>
+                <p class="text-sm text-base-content/70">{{ editingMember?.user?.email }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <label class="label">
+              <span class="label-text">Nuevo rol</span>
+            </label>
+            <select v-model="editMemberForm.role" class="select select-bordered w-full">
+              <option value="member">Miembro</option>
+              <option value="admin">Administrador</option>
+              <option value="owner">Propietario</option>
+            </select>
+          </div>
+          
+          <div class="modal-action">
+            <button type="button" class="btn" @click="closeEditMemberModal">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary" :disabled="isUpdating">
+              <span v-if="isUpdating" class="loading loading-spinner loading-xs mr-2"/>
+              Actualizar Rol
+            </button>
+          </div>
+        </form>
+        
+        <div v-if="updateError" class="alert alert-error mt-4">
+          <Icon name="heroicons:exclamation-triangle" class="w-4 h-4" />
+          <span>{{ updateError }}</span>
+        </div>
+      </div>
+      <div class="modal-backdrop" @click="closeEditMemberModal"/>
+    </div>
+
     <!-- Modal para crear/editar equipo -->
     <div v-if="showTeamModal" class="modal modal-open">
       <div class="modal-box">
@@ -549,6 +631,7 @@ import { useRoute } from 'vue-router'
 import { useOrganization } from '../composables/useOrganization'
 import { useOrganizationMembers } from '../composables/useOrganizationMembers'
 import { useOrganizationTeams } from '../composables/useOrganizationTeams'
+import { authClient } from '@/modules/auth/utils/auth.client'
 import type { Member, Team, Invitation } from '../types'
 
 // Tipo local para equipos con miembros readonly
@@ -576,9 +659,13 @@ const {
   members,
   isLoading: isLoadingMembers,
   inviteMember,
+  updateMemberRole,
   removeMember,
   isInviting,
   inviteError,
+  isUpdating,
+  updateError,
+  isRemoving,
   loadMembers
 } = useOrganizationMembers()
 
@@ -593,16 +680,28 @@ const {
   deleteTeam: removeTeam
 } = useOrganizationTeams(organizationId)
 
+// Estados de invitaciones
+const invitations = ref<Invitation[]>([])
+const isLoadingInvitations = ref(false)
+const isOperatingInvitation = ref(false)
+const invitationError = ref<string | null>(null)
+
 // Estados de la UI
 const activeTab = ref('members')
 const showInviteModal = ref(false)
+const showEditMemberModal = ref(false)
 const showTeamModal = ref(false)
 const editingTeam = ref<Team | null>(null)
+const editingMember = ref<Member | null>(null)
 
 // Formularios
 const inviteForm = ref({
   email: '',
   role: 'member' as 'admin' | 'member'
+})
+
+const editMemberForm = ref({
+  role: 'member' as 'admin' | 'member' | 'owner'
 })
 
 const teamForm = ref({
@@ -619,11 +718,10 @@ const tabs = [
 
 // Computed
 const pendingInvitations = computed(() => {
-  // TODO: Implementar cuando tengamos endpoint de invitaciones
-  return organization.value?.invitations?.length || 0
+  return invitations.value.filter(inv => inv.status === 'pending').length
 })
 
-// Métodos
+// Métodos de utilidad
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date.toLocaleDateString('es-ES', {
@@ -633,85 +731,122 @@ const formatDate = (dateString: string) => {
   })
 }
 
-// Gestión de miembros
-const handleInviteMember = async () => {
+// Gestión de invitaciones
+const loadInvitations = async () => {
+  isLoadingInvitations.value = true
+  invitationError.value = null
+  
   try {
-    await inviteMember(organizationId, {
-      email: inviteForm.value.email,
-      role: inviteForm.value.role
+    const response = await authClient.organization.listInvitations({
+      query: { organizationId }
     })
     
-    closeInviteModal()
-    // Recargar miembros
-    await loadMembers(organizationId)
-  } catch (error) {
-    console.error('Error invitando miembro:', error)
-  }
-}
-
-const editMember = (member: Member) => {
-  // TODO: Implementar modal de edición de miembro
-  console.log('Editar miembro:', member)
-}
-
-const handleRemoveMember = async (member: Member) => {
-  const confirmed = confirm(`¿Estás seguro de que quieres remover a ${member.user?.name || member.user?.email} de la organización?`)
-  if (!confirmed) return
-
-  try {
-    await removeMember(member.id)
-    await loadMembers(organizationId)
-  } catch (error) {
-    console.error('Error removiendo miembro:', error)
-  }
-}
-
-// Gestión de equipos
-const handleTeamSubmit = async () => {
-  try {
-    if (editingTeam.value) {
-      await updateTeam(organizationId, editingTeam.value.id, {
-        name: teamForm.value.name,
-        description: teamForm.value.description
-      })
-    } else {
-      await createTeam(organizationId, {
-        name: teamForm.value.name,
-        description: teamForm.value.description
-      })
+    if (response.error) {
+      throw new Error(response.error.message)
     }
     
-    closeTeamModal()
-    // Recargar equipos
-    if (teamsEnabled.value) {
-      await fetchTeams(organizationId)
-    }
+    // Mapear los datos de la respuesta al tipo Invitation esperado
+    invitations.value = (response.data || []).map(inv => ({
+      id: inv.id,
+      organizationId: inv.organizationId,
+      email: inv.email,
+      role: inv.role,
+      status: inv.status === 'rejected' ? 'declined' : inv.status === 'canceled' ? 'expired' : inv.status,
+      createdAt: new Date().toISOString(), // Better Auth no devuelve createdAt para invitaciones
+      expiresAt: typeof inv.expiresAt === 'string' ? inv.expiresAt : inv.expiresAt.toISOString()
+    }))
   } catch (error) {
-    console.error('Error con equipo:', error)
+    console.error('Error cargando invitaciones:', error)
+    invitationError.value = error instanceof Error ? error.message : 'Error al cargar invitaciones'
+    invitations.value = []
+  } finally {
+    isLoadingInvitations.value = false
   }
 }
 
- const editTeam = (team: TeamWithMembers) => {
-   editingTeam.value = team
-   teamForm.value = {
-     name: team.name,
-     description: team.description || ''
-   }
-   showTeamModal.value = true
- }
+const resendInvitation = async (invitation: Invitation) => {
+  isOperatingInvitation.value = true
+  
+  try {
+    // Cancelar la invitación actual y crear una nueva (equivalente a reenviar)
+    await authClient.organization.cancelInvitation({
+      invitationId: invitation.id
+    })
+    
+    // Crear nueva invitación
+    await inviteMember(organizationId, {
+      email: invitation.email,
+      role: invitation.role as 'admin' | 'member'
+    })
+    
+    // Recargar invitaciones
+    await loadInvitations()
+    
+    // Mostrar notificación de éxito
+    alert(`Invitación reenviada a ${invitation.email}`)
+  } catch (error) {
+    console.error('Error reenviando invitación:', error)
+    alert('Error al reenviar la invitación')
+  } finally {
+    isOperatingInvitation.value = false
+  }
+}
 
-const deleteTeam = async (teamId: string) => {
-  const confirmed = confirm('¿Estás seguro de que quieres eliminar este equipo?')
+const cancelInvitation = async (invitation: Invitation) => {
+  const confirmed = confirm(`¿Estás seguro de que quieres cancelar la invitación para ${invitation.email}?`)
   if (!confirmed) return
 
+  isOperatingInvitation.value = true
+  
   try {
-    await removeTeam(organizationId, teamId)
+    const response = await authClient.organization.cancelInvitation({
+      invitationId: invitation.id
+    })
+    
+    if (response.error) {
+      throw new Error(response.error.message)
+    }
+    
+    // Recargar invitaciones
+    await loadInvitations()
+    
+    alert(`Invitación cancelada para ${invitation.email}`)
   } catch (error) {
-    console.error('Error eliminando equipo:', error)
+    console.error('Error cancelando invitación:', error)
+    alert('Error al cancelar la invitación')
+  } finally {
+    isOperatingInvitation.value = false
   }
 }
 
-// Gestión de invitaciones
+const deleteInvitation = async (invitation: Invitation) => {
+  const confirmed = confirm(`¿Estás seguro de que quieres eliminar la invitación para ${invitation.email}?`)
+  if (!confirmed) return
+
+  isOperatingInvitation.value = true
+  
+  try {
+    // Si no existe un método específico para eliminar, usar cancelar
+    const response = await authClient.organization.cancelInvitation({
+      invitationId: invitation.id
+    })
+    
+    if (response.error) {
+      throw new Error(response.error.message)
+    }
+    
+    // Recargar invitaciones
+    await loadInvitations()
+    
+    alert(`Invitación eliminada para ${invitation.email}`)
+  } catch (error) {
+    console.error('Error eliminando invitación:', error)
+    alert('Error al eliminar la invitación')
+  } finally {
+    isOperatingInvitation.value = false
+  }
+}
+
 const getInvitationStatusClass = (status: string) => {
   const classes = {
     pending: 'badge badge-warning',
@@ -733,42 +868,114 @@ const getInvitationStatusText = (status: string) => {
 }
 
 const getInvitationsByStatus = (status: string) => {
-  return organization.value?.invitations?.filter(inv => inv.status === status) || []
+  return invitations.value.filter(inv => inv.status === status)
 }
 
-const resendInvitation = async (invitation: Invitation) => {
+// Gestión de miembros
+const handleInviteMember = async () => {
   try {
-    // TODO: Implementar endpoint de reenvío
-    console.log('Reenviando invitación:', invitation)
-    alert('Funcionalidad de reenvío pendiente de implementar')
+    await inviteMember(organizationId, {
+      email: inviteForm.value.email,
+      role: inviteForm.value.role
+    })
+    
+    closeInviteModal()
+    
+    // Recargar datos
+    await Promise.all([
+      loadMembers(organizationId),
+      loadInvitations()
+    ])
+    
+    alert(`Invitación enviada a ${inviteForm.value.email}`)
   } catch (error) {
-    console.error('Error reenviando invitación:', error)
+    console.error('Error invitando miembro:', error)
   }
 }
 
-const cancelInvitation = async (invitation: Invitation) => {
-  const confirmed = confirm(`¿Estás seguro de que quieres cancelar la invitación para ${invitation.email}?`)
-  if (!confirmed) return
+const editMember = (member: Member) => {
+  editingMember.value = member
+  editMemberForm.value.role = member.role as 'admin' | 'member' | 'owner'
+  showEditMemberModal.value = true
+}
 
+const handleUpdateMemberRole = async () => {
+  if (!editingMember.value) return
+  
   try {
-    // TODO: Implementar endpoint de cancelación
-    console.log('Cancelando invitación:', invitation)
-    alert('Funcionalidad de cancelación pendiente de implementar')
+    await updateMemberRole(editingMember.value.id, editMemberForm.value.role)
+    
+    closeEditMemberModal()
+    
+    // Recargar miembros
+    await loadMembers(organizationId)
+    
+    alert(`Rol actualizado para ${editingMember.value.user?.name || editingMember.value.user?.email}`)
   } catch (error) {
-    console.error('Error cancelando invitación:', error)
+    console.error('Error actualizando rol:', error)
   }
 }
 
-const deleteInvitation = async (invitation: Invitation) => {
-  const confirmed = confirm(`¿Estás seguro de que quieres eliminar la invitación para ${invitation.email}?`)
+const handleRemoveMember = async (member: Member) => {
+  const confirmed = confirm(`¿Estás seguro de que quieres remover a ${member.user?.name || member.user?.email} de la organización?`)
   if (!confirmed) return
 
   try {
-    // TODO: Implementar endpoint de eliminación
-    console.log('Eliminando invitación:', invitation)
-    alert('Funcionalidad de eliminación pendiente de implementar')
+    await removeMember(member.id)
+    await loadMembers(organizationId)
+    
+    alert(`Miembro removido: ${member.user?.name || member.user?.email}`)
   } catch (error) {
-    console.error('Error eliminando invitación:', error)
+    console.error('Error removiendo miembro:', error)
+  }
+}
+
+// Gestión de equipos
+const handleTeamSubmit = async () => {
+  try {
+    if (editingTeam.value) {
+      await updateTeam(organizationId, editingTeam.value.id, {
+        name: teamForm.value.name,
+        description: teamForm.value.description
+      })
+    } else {
+      await createTeam(organizationId, {
+        name: teamForm.value.name,
+        description: teamForm.value.description
+      })
+    }
+    
+    closeTeamModal()
+    
+    // Recargar equipos
+    if (teamsEnabled.value) {
+      await fetchTeams(organizationId)
+    }
+    
+    alert(editingTeam.value ? 'Equipo actualizado' : 'Equipo creado')
+  } catch (error) {
+    console.error('Error con equipo:', error)
+  }
+}
+
+const editTeam = (team: TeamWithMembers) => {
+  editingTeam.value = team
+  teamForm.value = {
+    name: team.name,
+    description: team.description || ''
+  }
+  showTeamModal.value = true
+}
+
+const deleteTeam = async (teamId: string) => {
+  const confirmed = confirm('¿Estás seguro de que quieres eliminar este equipo?')
+  if (!confirmed) return
+
+  try {
+    await removeTeam(organizationId, teamId)
+    alert('Equipo eliminado')
+  } catch (error) {
+    console.error('Error eliminando equipo:', error)
   }
 }
 
@@ -777,6 +984,14 @@ const closeInviteModal = () => {
   showInviteModal.value = false
   inviteForm.value = {
     email: '',
+    role: 'member'
+  }
+}
+
+const closeEditMemberModal = () => {
+  showEditMemberModal.value = false
+  editingMember.value = null
+  editMemberForm.value = {
     role: 'member'
   }
 }
@@ -797,6 +1012,7 @@ onMounted(async () => {
       await Promise.all([
         loadOrganization(),
         loadMembers(organizationId),
+        loadInvitations(),
         teamsEnabled.value ? fetchTeams(organizationId) : Promise.resolve()
       ])
     } catch (err) {

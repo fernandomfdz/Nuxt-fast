@@ -58,6 +58,11 @@ export default defineNuxtModule({
           name: 'organizations-settings',
           path: '/organizations/:id/edit',
           file: resolver.resolve('./pages/settings.vue')
+        },
+        {
+          name: 'accept-invitation',
+          path: '/accept-invitation/:id',
+          file: resolver.resolve('./pages/accept-invitation.vue')
         }
       )
     })

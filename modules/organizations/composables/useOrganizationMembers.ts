@@ -35,19 +35,7 @@ export const useOrganizationMembers = () => {
       
       // Mapear miembros de la respuesta
       if (response.data && response.data.members) {
-        members.value = response.data.members.map((member: { id: string; userId: string; organizationId: string; role: string; createdAt: Date; user: { id: string; name: string; email: string; image?: string } }) => ({
-          id: member.id,
-          userId: member.userId,
-          organizationId: member.organizationId,
-          role: member.role,
-          createdAt: member.createdAt.toString(),
-          user: member.user ? {
-            id: member.user.id,
-            name: member.user.name,
-            email: member.user.email,
-            image: member.user.image
-          } : undefined
-        }))
+        members.value = response.data.members
       } else {
         members.value = []
       }
